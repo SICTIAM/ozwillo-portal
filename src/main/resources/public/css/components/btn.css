@@ -78,7 +78,7 @@
 }
 
 .btn-default-inverse.focus, .btn-default-inverse:focus, .btn-default-inverse:hover {
-    color: #6f438e;
-    background-color: #fff;
-    border: 1px solid #6f438e;
+    color: var(--red-color);
+    background-color: var(--white-color);
+    border: 1px solid var(--red-color);
 }

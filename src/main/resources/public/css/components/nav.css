@@ -11,13 +11,13 @@
 
 #oz-nav.navbar-noauth {
     margin-bottom: 0;
-    background: #fff;
+    background: var(--white-color);
     border: none;
 }
 
 #oz-nav.navbar-noauth a {
     text-transform: uppercase;
-    color: #6f438e !important;
+    color: var(--red-color) !important;
 }
 
 #oz-nav.navbar-noauth #ozwillo-navbar {
@@ -37,12 +37,12 @@
 
 #oz-nav.navbar-auth {
     margin-bottom: 0;
-    background: #4c2d62;
+    background: var(--blue-color);
     border: none;
 }
 
 #oz-nav.navbar-auth .navbar-nav>li>a {
-    color: #fff;
+    color: var(--white-color);
 }
 
 @media (min-width: 768px) {

@@ -1,5 +1,6 @@
 /* GLOBAL STYLES */
 
+@import 'variables.css';
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,300,700);
 
 /* Components */
@@ -61,7 +62,7 @@ label.required {
 
 /* oz-body */
 .oz-body {
-    background: #6f438e;
+    background: var(--white-color);
 }
 
 .oz-body h1 {

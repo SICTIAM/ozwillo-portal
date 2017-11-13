@@ -1,5 +1,5 @@
 .footer {
-    background: #dfcae2;
+    background: var(--light-blue-color);
     padding-top: 60px;
     padding-bottom: 30px;
 }
@@ -11,9 +11,10 @@
 }
 
 .footer-link {
-    color: #555344;
+    color: var(--gray-color);
     font-size: 0.9em;
-    margin: 0 0 5px 25px;
+    margin: 4px 0;
+    text-align: left;
     display: block;
 }
 
@@ -24,7 +25,7 @@
 }
 
 .footer-top-block {
-    border-bottom: 1px solid #b294c0;
+    border-bottom: 1px solid var(--gray-color);
 }
 
 @media (max-width: 768px) {

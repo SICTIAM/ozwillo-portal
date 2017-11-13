@@ -342,6 +342,18 @@ var Dashboard = React.createClass({
         return (
             <div className="row">
                 <div className="col-md-12">
+
+                    <div className="top-menu">
+                        <AddNew
+                            key="add-new-icon" />
+
+                        <DeleteApp
+                            loading={this.state.loadingApps}
+                            key="delete-icon"
+                            delete={this.deleteApp}
+                            deletePending={this.deletePending} />
+                    </div>
+
                     <DashList
                         loading={this.state.loadingDashboards}
                         dashboards={this.state.dashboards}
@@ -607,7 +619,7 @@ var DeleteApp = React.createClass({
         var app = JSON.parse(event.dataTransfer.getData("application/json")).app;
 
         this.setState({over: true, app: app, pending: this.props.draggingPending});
-        this.refs.modal.open();
+        this.refs.deleteAppModal.open();
     },
     removeApp: function () {
         var app = this.state.app;
@@ -616,29 +628,29 @@ var DeleteApp = React.createClass({
         } else {
             this.props.deletePending(app);
         }
-        this.refs.modal.close();
+        this.refs.deleteAppModal.close();
         this.setState(this.getInitialState());
     },
     cancel: function () {
         this.setState(this.getInitialState());
     },
     render: function () {
-        var className = "delete-app appzone" + (this.state.over ? " over" : "");
+        var className = "delete-app" + (this.state.over ? " over" : "");
         var buttonLabels = {"save": t('ui.confirm'), "cancel": t('ui.cancel')};
 
         return (
             <div className={className}
-                onDragOver={this.over(true)} onDragLeave={this.over(false)} onDrop={this.drop} >
-                <Modal title={t('my.confirm-remove-app')} successHandler={this.removeApp} cancelHandler={this.cancel}
-                       buttonLabels={buttonLabels} ref="modal">
-                    <p>{t('my.confirm-remove-app-long')}</p>
-                </Modal>
-                <div className="app">
-                    <div className="action-icon">
-                        <span title={t('my.drop-to-remove')}>
-                            <i className="fa fa-trash fa-3x fa-border"></i>
-                        </span>
-                    </div>
+                 onDragOver={this.over(true)} onDragLeave={this.over(false)} onDrop={this.drop} >
+                {
+                    !this.props.loading && <Modal title={t('my.confirm-remove-app')} successHandler={this.removeApp} cancelHandler={this.cancel}
+                           buttonLabels={buttonLabels} ref="deleteAppModal">
+                        <p>{t('my.confirm-remove-app-long')}</p>
+                    </Modal>
+                }
+                <div className="delete-app action-icon">
+                    <span title={t('my.drop-to-remove')}>
+                        <i className="fa fa-trash fa-3x fa-border"></i>
+                    </span>
                 </div>
             </div>
         );
@@ -687,22 +699,6 @@ var Desktop = React.createClass({
                 }
             }
 
-            icons.push(
-                <AddNew
-                    key="add-new-icon"
-                    dragging={this.props.dragging}
-                    dropCallback={this.props.dropCallback} />
-            );
-
-            icons.push(
-                <DeleteApp
-                    key="delete-icon"
-                    dragging={this.props.dragging}
-                    draggingPending={this.props.draggingPending}
-                    delete={this.props.deleteApp}
-                    deletePending={this.props.deletePending} />
-            );
-
             return (
                 <div className="row">
                     <div className="col-sm-12 all-apps">
@@ -728,16 +724,11 @@ var AppZone = React.createClass({
 var AddNew = React.createClass({
     render: function () {
         return (
-            <div className="appzone">
-                <DropZone dragging={this.props.dragging} dropCallback={this.props.dropCallback("last")}/>
-                <div className="app">
-                    <div className="action-icon">
-                        <a href={store_root} title={t('my.click-to-add')} draggable="false">
-                            <i className="fa fa-plus fa-3x fa-border"></i>
-                        </a>
-                    </div>
+                <div className="new-app action-icon">
+                    <a href={store_root} title={t('my.click-to-add')} draggable="false">
+                        <i className="fa fa-plus fa-3x fa-border"></i>
+                    </a>
                 </div>
-            </div>
         );
     }
 });
@@ -778,7 +769,9 @@ var DropZone = React.createClass({
     render: function () {
         var className = "dropzone" + (this.state.over ? " dragover" : "") + (this.props.dragging ? " dragging" : "");
 
-        return <div className={className} onDragOver={this.dragOver} onDragLeave={this.dragLeave} onDrop={this.drop}/>;
+        return <div className={className} onDragOver={this.dragOver} onDragLeave={this.dragLeave} onDrop={this.drop}>
+            {this.props.children}
+        </div>;
     }
 });
 

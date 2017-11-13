@@ -1,5 +1,5 @@
 #dashboard .nav-tabs {
-    border-bottom-color: #4c2d62;
+    border-bottom-color: var(--red-color);
 }
 
 #dashboard ul.nav.nav-tabs > li {
@@ -8,19 +8,19 @@
 
 #dashboard ul.nav.nav-tabs > li > a {
     font-size: 20px;
-    color: #fff;
+    color: var(--red-color);
     border-radius: 0;
-    border: 1px solid #4c2d62;
+    border: 1px solid var(--red-color);
 }
 
 #dashboard ul.nav.nav-tabs > li.active > a {
-    background-color: #4c2d62;
+    background-color: var(--red-color);
+    color: var(--white-color);
 }
 
 #dashboard ul.nav.nav-tabs > li > a:hover {
-    background-color: #fff;
-    color: #6f438e;
-    border-color: #fff;
+    background-color: var(--white-color);
+    color: var(--red-color);
 }
 
 #dashboard ul.nav.nav-tabs > li > a i {
@@ -52,13 +52,20 @@
 #dashboard div.appzone div.app {
     float: left;
     overflow: hidden;
-    height: 160px;
-    width: 120px;
-    padding-top: 10px;
+    min-height: 100px;
+    max-height: 140px;
+    min-width: 100px;
+    max-width: 140px;
+    padding: 10px;
     border-radius: 5px;
     text-align:center;
     position:relative;
     display:inline-block;
+
+    color: var(--red-color);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.8em;
 }
 
 #dashboard div.appzone div.app span.badge-notifications {
@@ -80,14 +87,6 @@
     -ms-filter: grayscale(100%);
 }
 
-#dashboard div.appzone div.app.pending p {
-    color: #d3d3d3;
-}
-
-#dashboard div.appzone div.app:hover {
-    background: #4c2d62;
-}
-
 #dashboard div.appzone.delete-app {
     width: 140px;
 }
@@ -103,8 +102,28 @@
 }
 
 #dashboard div.appzone div.app div.action-icon a {
-    color: #fff;
+    color: var(--red-color)
 }
+
+#dashboard div.top-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+#dashboard div.top-menu .action-icon {
+    font-size: 0.8em;
+    margin: 0 2px;
+}
+
+#dashboard div.top-menu .action-icon.delete-app {
+    color: var(--red-color);
+}
+
+#dashboard div.top-menu .action-icon .fa-border {
+    padding: 5px;
+}
+
 
 /* See non-webkit sol : http://codepen.io/anon/pen/oXxKpE?editors=110 */
 @supports (-webkit-line-clamp: 4) {
