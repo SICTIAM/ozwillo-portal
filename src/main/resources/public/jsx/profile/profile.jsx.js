@@ -7,7 +7,15 @@ import "../csrf";
 import "../my";
 import t from "../util/message";
 
-import {Form, InputText, Select, SubmitButton, InputDatePicker, CountrySelector} from "../util/form";
+import {
+    Form,
+    InputText,
+    SubmitButton,
+    InputDatePicker,
+    CountrySelector,
+    LanguageSelector,
+    GenderSelector
+} from "../util/form";
 import {GeoAreaAutosuggest} from "../util/geoarea-autosuggest.jsx";
 
 const moment = require('moment');
@@ -244,52 +252,18 @@ class PasswordAccount extends React.Component {
     }
 }
 
-const PasswordLink = ({ passwordChangeEndpoint }) =>
-    <div className="form-group">
-        <div className="col-sm-9 col-sm-offset-3">
-            <a className="change-password btn btn-lg btn-warning" href={passwordChangeEndpoint}>{t('my.profile.account.changepassword')}</a>
+class PasswordLink extends React.Component {
+    static propTypes = {
+        passwordChangeEndpoint: React.PropTypes.string.isRequired
+    };
+
+    render() {
+        const passwordChangeEndpoint =  this.props.passwordChangeEndpoint;
+        return <div className="form-group">
+            <div className="col-sm-9 col-sm-offset-3">
+                <a className="change-password btn btn-lg btn-warning" href={passwordChangeEndpoint}>{t('my.profile.account.changepassword')}</a>
+            </div>
         </div>
-    </div>
-
-class LanguageSelector extends React.Component {
-    static propTypes = {
-        value: React.PropTypes.string,
-        languages: React.PropTypes.array.isRequired,
-        onChange: React.PropTypes.func.isRequired
-    }
-    render() {
-        return (
-            <Select name="language" value={this.props.value}
-                    onChange={this.props.onChange}
-                    label={t('my.profile.account.language')}>
-                { this.props.languages.map(option =>
-                    <option key={option} value={option}>{t('my.profile.account.language.' + option)}</option>)
-                }
-            </Select>
-        )
-    }
-}
-
-
-class GenderSelector extends React.Component {
-    static propTypes = {
-        value: React.PropTypes.string,
-        onChange: React.PropTypes.func.isRequired
-    }
-
-    render() {
-        const genders = ['male','female']
-        return (
-            <Select name="gender" value={this.props.value}
-                    label={t('my.profile.personal.gender')}
-                    onChange={this.props.onChange}>
-                {
-                    genders.map(option =>
-                        <option key={option} value={option}>{t('my.profile.personal.gender.' + option)}</option>
-                    )
-                }
-            </Select>
-        )
     }
 }
 
