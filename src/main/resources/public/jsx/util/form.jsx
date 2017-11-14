@@ -5,7 +5,7 @@ import t from "./message";
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Form = ({ id, onSubmit, children }) =>
-    <form id={id} onSubmit={onSubmit} className="form-horizontal">
+    <form id={id} onSubmit={onSubmit} className="oz-form form-horizontal">
         {children}
     </form>
 
@@ -29,7 +29,7 @@ const InputText = ({ name, value, label, onChange, labelClassName, divClassName,
 
 InputText.defaultProps = {
     divClassName: 'col-sm-7',
-    labelClassName: 'control-label col-sm-3',
+    labelClassName: 'control-label field-label col-sm-3',
     disabled: false,
     value: ''
 }
@@ -76,7 +76,7 @@ Select.propTypes = {
 
 Select.defaultProps = {
     divClassName: 'col-sm-7',
-    labelClassName: 'control-label col-sm-3',
+    labelClassName: 'control-label field-label col-sm-3',
     emptyValue: true,
     value: ''
 }
@@ -123,7 +123,7 @@ InputDatePicker.propTypes = {
 
 InputDatePicker.defaultProps = {
     divClassName: 'col-sm-7',
-    labelClassName: 'control-label col-sm-3',
+    labelClassName: 'control-label field-label col-sm-3',
     dropdownMode: 'select'
 }
 

@@ -98,9 +98,13 @@ class Profile extends React.Component {
                                      onValueChange={this.onValueChange.bind(this)} />
                     <AddressAccount address={this.state.userProfile.address}
                                     onValueChange={this.onValueChange.bind(this)} />
-                    <SubmitButton label={t('ui.save')} className="btn-lg" />
+                    <div className="row children-align-right">
+                        <SubmitButton label={t('ui.save')} className="btn-lg" />
+                        <PasswordLink passwordChangeEndpoint={this.state.passwordChangeEndpoint} />
+                    </div>
+
                 </Form>
-                <PasswordAccount passwordChangeEndpoint={this.state.passwordChangeEndpoint} />
+
 
             </div>
         )
@@ -115,24 +119,22 @@ class ProfileAccount extends React.Component {
     }
     render() {
         return (
-            <div className="row">
-                <div className="col-sm-12">
-                    <h2>{t('my.profile.title.account')}</h2>
-                </div>
-                    <div className="form-group">
-                        <div className="control-label col-sm-3 required">
-                            {t('my.profile.account.email')}
-                        </div>
-                        <div className="col-sm-7 text-align-middle">
-                            <span>{this.props.userProfile.email_address}</span>
-                        </div>
+            <fieldset className="column">
+                <legend>{t('my.profile.title.account')}</legend>
+                <div className="form-group">
+                    <div className="control-label field-label col-sm-3 required">
+                        {t('my.profile.account.email')}
                     </div>
-                    <InputText name="nickname" value={this.props.userProfile.nickname} isRequired={true}
-                               onChange={e => this.props.onValueChange('nickname', e.target.value)}
-                               label={t('my.profile.personal.nickname')} />
-                    <LanguageSelector value={this.props.userProfile.locale} languages={this.props.languages}
-                                      onChange={e => this.props.onValueChange('locale', e.target.value)}/>
-            </div>
+                    <div className="col-sm-7 text-align-middle">
+                        <span className="val">{this.props.userProfile.email_address}</span>
+                    </div>
+                </div>
+                <InputText name="nickname" value={this.props.userProfile.nickname} isRequired={true}
+                           onChange={e => this.props.onValueChange('nickname', e.target.value)}
+                           label={t('my.profile.personal.nickname')} />
+                <LanguageSelector value={this.props.userProfile.locale} languages={this.props.languages}
+                                  onChange={e => this.props.onValueChange('locale', e.target.value)}/>
+            </fieldset>
         )
     }
 }
@@ -157,10 +159,8 @@ class IdentityAccount extends React.Component {
         const birthdate = moment.utc(this.props.userProfile.birthdate)
 
         return (
-            <div className="row">
-                <div className="col-sm-12">
-                    <h2>{t('my.profile.personal.identity')}</h2>
-                </div>
+            <fieldset className="column">
+                <legend>{t('my.profile.personal.identity')}</legend>
                 <InputText name="given_name" value={this.props.userProfile.given_name}
                            onChange={e => this.props.onValueChange('given_name', e.target.value)}
                            label={t('my.profile.personal.firstname')} />
@@ -177,7 +177,7 @@ class IdentityAccount extends React.Component {
                            onChange={e => this.props.onValueChange('phone_number', e.target.value)} />
                 <GenderSelector value={this.props.userProfile.gender}
                                 onChange={e => this.props.onValueChange('gender', e.target.value)} />
-            </div>
+            </fieldset>
         )
     }
 }
@@ -202,15 +202,13 @@ class AddressAccount extends React.Component {
     }
     render () {
         return (
-            <div className="row">
-                <div className="col-sm-12">
-                    <h2>{t('my.profile.personal.address')}</h2>
-                </div>
+            <fieldset className="column">
+                <legend>{t('my.profile.personal.address')}</legend>
                 <CountrySelector value={this.props.address.country}
                                  onChange={e => this.props.onValueChange('address.country', e.target.value)}
                                  url={store_service + "/dc-countries"} label={t('my.profile.personal.country')} />
                 <div className='form-group'>
-                    <label className="control-label col-sm-3">
+                    <label className="control-label field-label col-sm-3">
                         {t('my.profile.personal.locality')}
                     </label>
                     <div className="col-sm-7">
@@ -229,25 +227,7 @@ class AddressAccount extends React.Component {
                 <InputText name="address.street_address" value={this.props.address.street_address}
                            label={t('my.profile.personal.streetaddress')}
                            onChange={e => this.props.onValueChange('address.street_address', e.target.value)} />
-            </div>
-        )
-    }
-}
-
-class PasswordAccount extends React.Component {
-    static propTypes = {
-        passwordChangeEndpoint: React.PropTypes.string.isRequired
-    }
-    render() {
-        return (
-            <div className="row">
-                <div className="col-sm-12">
-                    <h2>{t('my.profile.account.password')}</h2>
-                </div>
-                <div className="col-sm-12">
-                    <PasswordLink passwordChangeEndpoint={this.props.passwordChangeEndpoint} />
-                </div>
-            </div>
+            </fieldset>
         )
     }
 }

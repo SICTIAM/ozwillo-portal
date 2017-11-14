@@ -1,0 +1,15 @@
+.oz-form fieldset > legend{
+    color: var(--red-color);
+    border-bottom-color: var(--red-color);
+    text-transform: uppercase;
+    font-size: 1.2em;
+}
+
+.oz-form fieldset .field-label {
+    color: var(--red-color);
+}
+
+.oz-form fieldset .val {
+    color: var(--black-color);
+}
+

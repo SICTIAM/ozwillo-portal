@@ -7,6 +7,7 @@
 @import 'components/btn.css';
 @import 'components/datepicker.css';
 @import 'components/footer.css';
+@import 'components/form.css';
 @import 'components/header.css';
 @import 'components/modal.css';
 @import 'components/nav.css';
@@ -30,10 +31,10 @@ body { height: 100%; }
 body {
     display: table;
     width: 100%;
-    color: #fff !important;
+    color: var(--gray-color) !important;
 }
 
-body, h1, h2 {
+h1, h2 {
     font-family: 'Roboto', sans-serif !important;
     font-weight: 300 !important;
 }
@@ -49,6 +50,12 @@ label {
 
 label.required {
     font-weight: 700;
+}
+
+.title {
+    color: var(--blue-color);
+    font-weight: bold;
+    font-size: 0.8em;
 }
 
 .row {
