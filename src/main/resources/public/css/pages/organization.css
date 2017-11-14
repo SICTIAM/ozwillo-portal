@@ -1,14 +1,19 @@
 .organization {
     background-color: white;
-    border: 1px solid #6f438e;
+    border: 1px solid var(--blue-color);
     margin-bottom: 1em;
 }
 
 div.organization .organization-header {
     padding: 10px 20px;
     margin: 0;
-    border-bottom: 1px solid #6f438e;
-    background-color: #ECEFF1;
+    border-bottom: 1px solid var(--blue-color);
+    background-color: var(--light-blue-color);
+}
+
+div.organization .organization-header .title {
+    color: var(--white-color);
+    font-size: 1.2em;
 }
 
 div.organization .organization-member-row {
