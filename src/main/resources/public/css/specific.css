@@ -51,6 +51,18 @@ label.required {
     font-weight: 700;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
 /* page-row */
 .page-row {
     display: table-row;
@@ -96,10 +108,15 @@ label.required {
     margin-top: 25px;
 }
 
-.logo-twitter {
-    width: auto;
-    height: auto;
-    margin: 25px 0 0 0;
+.twitter {
+    display: inline-block;
+    padding: 10px;
+
+    font-size: 2em;
+    color: var(--white-color);
+    background-color: var(--blue-color);
+    border: solid 1px var(--blue-color);
+    border-radius: 30px;
 }
 
 .action-icon {
@@ -108,5 +125,19 @@ label.required {
 
 .text-align-middle {
     padding-top:0.5em;
+}
+
+.children-align-right {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.children-align-left {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 /* end helper */

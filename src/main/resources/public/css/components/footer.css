@@ -28,6 +28,20 @@
     border-bottom: 1px solid var(--gray-color);
 }
 
+.outside-link.logo {
+    max-width: 70px;
+    margin: auto 10px;
+}
+
+.footer-outside-link {
+    margin-top: 5px;
+}
+
+.footer-outside-link a {
+    align-self: center;
+}
+
+
 @media (max-width: 768px) {
     a.footer-link {
         font-size: 1em;

@@ -1,53 +1,45 @@
 <footer class="page-row">
-    <div class="container-fluid">
-        <div class="row footer">
-            <div class="col-md-12 footer-top-block">
-                <div class="row flex-row">
-                    <div class="col-md-4 col-xs-12">
-                        <div class="footer-logo">
-                            <img data-th-src="@{/img/logo-ozwillo-footer.png}" />
-                        </div>
-                    </div>
-                    <div data-th-each="entry,row: ${sitemapFooter}" class="col-xs-6 col-sm-3 col-md-2 text-center">
-                        <div data-th-each="sme: ${entry.getValue()}" data-th-remove="tag">
-                            <a class="footer-link" data-th-href="${sme.url}" data-th-text="${sme.label}"></a>
-                        </div>
-                        <span id="contact" data-th-if="${row.index == 3}">
-                            <!-- Here, we'll insert the link that calls the contact modal in React's contact.jsx module -->
-                        </span>
+    <div class="column footer">
+        <div class="col-md-12 footer-top-block">
+            <div class="row flex-row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="footer-logo">
+                        <img data-th-src="@{/img/logo-ozwillo-footer.png}" />
                     </div>
                 </div>
-            </div>
-
-
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="logo-twitter">
-                            <a href="https://twitter.com/ozwillo">
-                                <img data-th-src="@{/img/twitter.jpg}" />
-                            </a>
-                        </div>
+                <div data-th-each="entry,row: ${sitemapFooter}" class="col-xs-6 col-sm-3 col-md-2 text-center">
+                    <div data-th-each="sme: ${entry.getValue()}" data-th-remove="tag">
+                        <a class="footer-link" data-th-href="${sme.url}" data-th-text="${sme.label}"></a>
                     </div>
-                    <div class="col-md-9">
-                        <div class="pull-right top">
-                            <a href="https://www.ozwillo.com/en/oz/projects">
-                                <img data-th-src="@{/img/cip.jpg}" />
-                            </a>
-                            <a href="https://www.ozwillo.com/en/oz/projects">
-                                <img data-th-src="@{/img/eu.jpg}" />
-                            </a>
-                            <a href="https://www.ozwillo.com/en/oz/projects">
-                                <img data-th-src="@{/img/investir.jpg}" />
-                            </a>
-                            <a href="https://www.ozwillo.com/en/oz/projects">
-                                <img data-th-src="@{/img/RP.jpg}" />
-                            </a>
-                        </div>
-                    </div>
+                    <span id="contact" data-th-if="${row.index == 3}">
+                        <!-- Here, we'll insert the link that calls the contact modal in React's contact.jsx module -->
+                    </span>
                 </div>
             </div>
-
         </div>
+
+
+        <nav class="footer-outside-link row">
+            <div class="children-align-left">
+                <a href="https://twitter.com/ozwillo">
+                    <i class="fa fa-twitter outside-link twitter logo"></i>
+                </a>
+            </div>
+
+            <div class="children-align-right">
+                <a href="https://www.ozwillo.com/en/oz/projects">
+                    <img data-th-src="@{/img/cip.png}" class="outside-link logo"/>
+                </a>
+                <a href="https://www.ozwillo.com/en/oz/projects">
+                    <img data-th-src="@{/img/eu.jpg}" class="outside-link logo"/>
+                </a>
+                <a href="https://www.ozwillo.com/en/oz/projects">
+                    <img data-th-src="@{/img/invest.png}" class="outside-link logo"/>
+                </a>
+                <a href="https://www.ozwillo.com/en/oz/projects">
+                    <img data-th-src="@{/img/RP.png}" class="outside-link logo"/>
+                </a>
+            </div>
+        </nav>
     </div>
 </footer>
