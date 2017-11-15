@@ -2,8 +2,10 @@
     --black-color: black;
     --white-color: white;
     --red-color: rgba(190, 40, 62, 1);
+    --dark-red-color: rgba(150, 0, 42, 1);
     --blue-color: rgba(34, 97, 165, 1);
+    --dark-blue-color: rgba(14, 77, 145, 1);
     --light-blue-color: rgba(64, 127, 195, 1);
     --gray-color: #CCC;
-
+    --dark-gray-color: #999;
 }

@@ -51,7 +51,7 @@ styles:
   mixins: true
 
   # Reset and dependencies
-  normalize: true
+  normalize: false
   print: false
   glyphicons: false
 
@@ -62,7 +62,7 @@ styles:
   grid: true
   tables: true
   forms: true
-  buttons: true
+  buttons: false
 
   # Components
   component-animations: true
