@@ -11,7 +11,7 @@
 }
 
 #store-apps {
-    background-color: #fff;
+    background-color: var(--white-color);
 }
 
 #store-apps .app {
@@ -43,7 +43,7 @@
 }
 
 #store-apps .app .description {
-    border: 1px solid #d3d2d2;
+    border: 1px solid var(--gray-color);
     display: block;
     top: 82px;
     position: relative;
@@ -55,7 +55,7 @@
 }
 
 #store-apps .app .description .app-name {
-    color: #4c4c4c;
+    color: var(--black-color);
     font-size: 24px;
     margin: 90px 0 10px 0;
     text-align: center;
@@ -63,14 +63,14 @@
 }
 
 #store-apps .app .description .app-provider {
-    color: #545454;
+    color: var(--black-2-color);
     font-size: 15px;
     text-align: center;
     display: block;
 }
 
 #store-apps .app .description .app-description {
-    color: #545454;
+    color: var(--black-2-color);
     font-size: 15px;
     margin: 0 40px 28px 40px;
     text-align: center;
@@ -111,27 +111,27 @@
 }
 
 #store-apps .app .description .app-status .btn-buy {
-    background-color: #e91659;
+    background-color: var(--pink-color);
 }
 
 #store-apps .app .description .app-status .btn-buy-indicator {
-    background-color: #ce124f;
+    background-color: var(--red-color);
 }
 
 #store-apps .app .description .app-status .btn-free {
-    background-color: #f8ba03;
+    background-color: var(--yellow-color);
 }
 
 #store-apps .app .description .app-status .btn-free-indicator {
-    background-color: #f69b04;
+    background-color: var(--orange-color)
 }
 
 #store-apps .app .description .app-status .btn-installed {
-    background-color: #43a047;
+    background-color: var(--green-color);
 }
 
 #store-apps .app .description .app-status .btn-installed-indicator {
-    background-color: #2e7d32;
+    background-color: var(--dark-green-color);
 }
 
 #store-apps .oz-simple-modal .next {
@@ -166,6 +166,10 @@
     height: 451px;
     border: 1px #5b5f84 solid;
     margin: 24px auto;
+}
+
+#store-apps > .row {
+    flex-wrap: wrap;
 }
 
 @media (max-width: 991px) {

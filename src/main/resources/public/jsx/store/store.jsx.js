@@ -183,13 +183,13 @@ var SearchAppsForm = React.createClass({
         );
 
         return (
-            <div className="container">
-
+            <form className="oz-form container">
                 <div className="row form-horizontal" id="store-search">
                     <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="language"
-                                   className="col-sm-4 control-label">{t('languages-supported-by-applications')}</label>
+                        <fieldset className="form-group">
+                            <label htmlFor="language" className="col-sm-4 control-label field-label">
+                                {t('languages-supported-by-applications')}
+                            </label>
 
                             <div className="col-sm-8">
                                 <select id="language" className="form-control" onChange={this.handleLanguageClicked}
@@ -197,73 +197,81 @@ var SearchAppsForm = React.createClass({
                                     {languageComponents}
                                 </select>
                             </div>
-                        </div>
+                        </fieldset>
 
                         {/* geo-filer - filtering by jurisdiction (geoArea) */}
-                        <div className="form-group">
-                            <label htmlFor="geoSearch" className="col-sm-4 control-label">{t('geoarea')}</label>
+                        <fieldset className="form-group">
+                            <label htmlFor="geoSearch" className="col-sm-4 control-label field-label">
+                                {t('geoarea')}
+                            </label>
 
                             <div className="col-sm-8">
                                 <GeoAreaAutosuggest countryUri=""
                                                     endpoint="/geographicalAreas"
                                                     onChange={this.onGeoChange} />
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="col-sm-4 control-label">{t('mode')}</label>
+                        </fieldset>
+                        <fieldset className="form-group">
+                            <label className="col-sm-4 control-label field-label">
+                                {t('mode')}
+                            </label>
 
                             <div className="col-sm-8">
-                                <label className="checkbox-inline">
+                                <label className="checkbox-inline val">
                                     <input type="checkbox" name="free" checked={this.props.filter.payment.free}
                                            onChange={this.onPaymentChange}/>{t('free')}
                                 </label>
-                                <label className="checkbox-inline">
+                                <label className="checkbox-inline val">
                                     <input type="checkbox" name="paid" checked={this.props.filter.payment.paid}
                                            onChange={this.onPaymentChange}/>{t('paid')}
                                 </label>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
                     <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="fulltext" className="col-sm-4 control-label">{t('keywords')}</label>
+                        <fieldset className="form-group">
+                            <label htmlFor="fulltext" className="col-sm-4 control-label field-label">
+                                {t('keywords')}
+                            </label>
 
                             <div className="col-sm-8">
                                 <input type="text" id="fulltext" className="form-control"
                                        onChange={this.fullTextSearchChanged}
                                        placeholder={t('keywords')} name="fullTextSearch"/>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="col-sm-4 control-label">{t('audience')}</label>
+                        </fieldset>
+                        <fieldset className="form-group">
+                            <label className="col-sm-4 control-label field-label">
+                                {t('audience')}
+                            </label>
 
                             <div className="col-sm-8">
                                 <div className="checkbox">
-                                    <label>
+                                    <label className="val">
                                         <input type="checkbox" name="citizens"
                                                checked={this.props.filter.audience.citizens}
                                                onChange={this.onAudienceChange}/>{t('citizens')}
                                     </label>
                                 </div>
                                 <div className="checkbox">
-                                    <label>
+                                    <label className="val">
                                         <input type="checkbox" name="publicbodies"
                                                checked={this.props.filter.audience.publicbodies}
                                                onChange={this.onAudienceChange}/>{t('publicbodies')}
                                     </label>
                                 </div>
                                 <div className="checkbox">
-                                    <label>
+                                    <label className="val">
                                         <input type="checkbox" name="companies"
                                                checked={this.props.filter.audience.companies}
                                                onChange={this.onAudienceChange}/>{t('companies')}
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
                 </div>
-            </div>
+            </form>
         );
     }
 });
@@ -282,11 +290,9 @@ var AppList = React.createClass({
         else
             return (
                 <div className="container-fluid">
-                    <div className="row" id="store-apps">
-                        <div className="col-md-12">
-                            <div className="row clearfix">
-                                {this.renderApps()}
-                            </div>
+                    <div className="" id="store-apps">
+                        <div className="row clearfix">
+                            {this.renderApps()}
                         </div>
                     </div>
                 </div>

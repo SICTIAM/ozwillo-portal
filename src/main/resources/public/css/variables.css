@@ -1,5 +1,6 @@
 :root {
-    --black-color: black;
+    --black-color: #4c4c4c;
+    --black-2-color: #545454;
     --white-color: white;
     --red-color: rgba(190, 40, 62, 1);
     --dark-red-color: rgba(150, 0, 42, 1);
@@ -8,4 +9,9 @@
     --light-blue-color: rgba(64, 127, 195, 1);
     --gray-color: #CCC;
     --dark-gray-color: #999;
+    --pink-color: #e91659;
+    --yellow-color: #f8ba03;
+    --orange-color: #f69b04;
+    --green-color: #43a047;
+    --dark-green-color: #2e7d32;
 }
