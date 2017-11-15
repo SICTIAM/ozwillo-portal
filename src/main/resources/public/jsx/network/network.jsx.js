@@ -402,10 +402,10 @@ var Organization = React.createClass({
             <div className="organization">
                 {dialogs}
                 <div className="row organization-header">
-                    <div className="col-sm-6">
+                    <div className="col-sm-5">
                         <span title={this.props.org.id} className="title">{this.props.org.name}</span>
                     </div>
-                    <div className="col-sm-6">
+                    <div className="col-sm-7">
                         <div className="pull-right">
                             {buttons}
                         </div>

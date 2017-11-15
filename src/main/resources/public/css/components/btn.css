@@ -39,19 +39,25 @@
 }
 
 .oz-btn-save {
-    background-color: #00796b;
+    background-color: var(--green-color);
     color: #fff;
-    border: 1px solid #00796b;
+    border: 1px solid var(--green-color);;
 }
 
 .oz-btn-save.focus, .oz-btn-save:focus, .oz-btn-save:hover {
-    background-color: #004D40;
+    background-color: var(--dark-green-color);
     color: #fff;
-    border: 1px solid #004D40;
+    border: 1px solid var(--dark-green-color);
 }
 
 .btn-warning {
     color: var(--white-color);
+    background-color: var(--orange-color);
+}
+
+.btn-warning:hover {
+    color: var(--white-color);
+    background-color: var(--dark-orange-color);
 }
 
 .oz-btn-danger,
