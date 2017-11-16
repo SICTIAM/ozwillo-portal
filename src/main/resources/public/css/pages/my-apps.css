@@ -5,13 +5,12 @@
 #myapps .authority-header {
     background-color: var(--light-blue-color);
     font-size: 20px;
-    border-bottom: 1px solid var(--blue-color);
     color: var(--white-color);
 }
 
 #myapps .authority-body {
     background-color: white;
-    color: #333;
+    color: var(--black-2-color);
 }
 
 #myapps .authority-body .authority-app {

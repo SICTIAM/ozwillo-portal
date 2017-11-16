@@ -11,7 +11,7 @@
 }
 
 .footer-link {
-    color: var(--gray-color);
+    color: var(--light-gray-color);
     font-size: 0.9em;
     margin: 4px 0;
     text-align: left;
@@ -25,7 +25,7 @@
 }
 
 .footer-top-block {
-    border-bottom: 1px solid var(--gray-color);
+    border-bottom: 1px solid var(--light-gray-color);
 }
 
 .outside-link.logo {

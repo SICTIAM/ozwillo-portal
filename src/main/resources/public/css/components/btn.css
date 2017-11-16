@@ -1,3 +1,4 @@
+a.btn { text-decoration: none; }
 .btn {
     display: inline-block;
     margin-bottom: 0;
@@ -75,12 +76,13 @@
 }
 
 .btn-default {
-    color: var(--blue-color);
-    border: 1px solid var(--blue-color);
+    color: var(--white-color);
+    background-color: var(--light-blue-color);
 }
 
 .btn-default.focus, .btn-default:focus, .btn-default:hover {
-    background-color: var(--blue-color);
+    color: var(--light-blue-color);
+    background-color: var(--white-color);
 }
 
 .btn-default-inverse {

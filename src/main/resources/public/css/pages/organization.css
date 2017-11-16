@@ -1,14 +1,12 @@
 .organization {
     background-color: white;
-    border: 1px solid var(--blue-color);
     margin-bottom: 1em;
 }
 
 div.organization .organization-header {
     padding: 10px 20px;
     margin: 0;
-    border-bottom: 1px solid var(--blue-color);
-    background-color: var(--light-blue-color);
+    background-color: var(--blue-color);
 }
 
 div.organization .organization-header .title {
@@ -19,7 +17,7 @@ div.organization .organization-header .title {
 div.organization .organization-member-row {
     padding: 5px 15px;
     margin: 0 10px 0 10px;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid var(--white-color);
     line-height: 30px;
     color: #333;
 }
@@ -28,7 +26,7 @@ div.organization .organization-pending-member-row {
     font-style: italic;
     padding: 5px 15px;
     margin: 0 10px 0 10px;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid var(--white-color);
     line-height: 30px;
     color: #333;
 }

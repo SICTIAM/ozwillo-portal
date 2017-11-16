@@ -54,7 +54,7 @@ label.required {
 }
 
 .title {
-    color: var(--blue-color);
+    color: var(--pink-color);
     font-weight: bold;
     font-size: 0.8em;
 }
@@ -120,7 +120,7 @@ label.required {
     display: inline-block;
     padding: 10px;
 
-    font-size: 2em;
+    font-size: 2em !important;
     color: var(--white-color);
     background-color: var(--blue-color);
     border: solid 1px var(--blue-color);
