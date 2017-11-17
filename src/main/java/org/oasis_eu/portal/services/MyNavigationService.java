@@ -28,7 +28,7 @@ public class MyNavigationService {
     @Autowired
     private HttpServletRequest httpRequest;
 
-    private List<String> pages = Arrays.asList("dashboard", "profile", "network", "apps");
+    private List<String> pages = Arrays.asList(/*"dashboard", */"profile", "network", "apps");
 
     public List<MyNavigation> getNavigation(String pagename) {
         return pages.stream().map(id -> new MyNavigation(id, id.equals(pagename))).collect(Collectors.toList());

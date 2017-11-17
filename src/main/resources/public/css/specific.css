@@ -71,6 +71,11 @@ label.required {
     flex-direction: column;
 }
 
+.column-reverse {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 /* page-row */
 .page-row {
     display: table-row;

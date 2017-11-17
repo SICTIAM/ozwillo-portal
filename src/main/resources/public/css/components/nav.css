@@ -31,18 +31,25 @@
 #oz-nav.navbar-noauth .navbar-brand>img {
     max-height: 100%;
     height: 100%;
-    width: auto;
+    width: 100%;
     margin: 0 auto;
 }
 
 #oz-nav.navbar-auth {
-    margin-bottom: 0;
+    width: 100%;
+    margin: auto 0;
     background: var(--blue-color);
     border: none;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 #oz-nav.navbar-auth .navbar-nav > li {
     height: 55px;
+}
+
+
+#oz-nav.navbar-auth ul.navbar-nav:first-child {
+    padding-left: 200px;
 }
 
 #oz-nav.navbar-auth .navbar-nav > li:hover {
@@ -72,8 +79,9 @@
 }
 
 
-
-
+#ozwillo-navbar {
+    position: relative;
+}
 
 @media (min-width: 768px) {
     #oz-nav.navbar {

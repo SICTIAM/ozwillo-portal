@@ -1,5 +1,6 @@
 .oz-header {
-    margin-top: 15px;
+    position: relative;
+    height: 200px;
 }
 
 .oz-header .welcome {
@@ -14,4 +15,37 @@
 .oz-header .welcome .badge {
     background: var(--red-color);
     color: var(--white-color);
+}
+
+.oz-header .logo-container {
+    position: absolute;
+    height: 100%;
+    width: 200px;
+    border: 1px solid var(--white-color);
+    border-radius: 100px;
+    z-index: 2;
+    padding: 3px;
+    background-color: var(--white-color);
+    box-shadow: -1px 4px 4px rgba(0, 0, 0, 0.2),
+                1px -1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.oz-header .navbar-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.oz-header .user-container {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+
+.oz-header .logo-app {
+    height: 100%;
+    padding: 10px;
 }
