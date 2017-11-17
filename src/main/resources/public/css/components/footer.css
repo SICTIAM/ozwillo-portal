@@ -1,17 +1,17 @@
 .footer {
-    background: var(--light-blue-color);
-    padding-top: 60px;
+    background: #EEE;
+    padding-top: 40px;
     padding-bottom: 30px;
+    box-shadow:0 0 40px rgba(0, 0, 0, 0.2);
 }
 
-.footer-logo {
-    width: auto;
-    height: auto;
-    margin: 0 0 25px 0;
+.footer .logo {
+    max-height: 140px;
+    margin: auto;
 }
 
 .footer-link {
-    color: var(--light-gray-color);
+    color: var(--light-blue-color);
     font-size: 0.9em;
     margin: 4px 0;
     text-align: left;
@@ -22,10 +22,15 @@
     text-transform: none;
     font-weight: 300;
     font-size: 14px;
+
 }
 
 .footer-top-block {
-    border-bottom: 1px solid var(--light-gray-color);
+    border-bottom: 1px solid var(--light-blue-color);
+}
+
+.footer-top-block > .row {
+    margin-bottom: 10px;
 }
 
 .outside-link.logo {

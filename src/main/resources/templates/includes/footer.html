@@ -1,11 +1,9 @@
 <footer class="page-row">
     <div class="column footer">
         <div class="col-md-12 footer-top-block">
-            <div class="row flex-row">
-                <div class="col-md-4 col-xs-12">
-                    <div class="footer-logo">
-                        <img data-th-src="@{/img/logo-ozwillo-footer.png}" />
-                    </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12 row">
+                    <img data-th-src="@{/img/logo-sictiam.png}" class="logo"/>
                 </div>
                 <div data-th-each="entry,row: ${sitemapFooter}" class="col-xs-6 col-sm-3 col-md-2 text-center">
                     <div data-th-each="sme: ${entry.getValue()}" data-th-remove="tag">
