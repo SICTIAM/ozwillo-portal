@@ -37,7 +37,7 @@ var MyNetwork = React.createClass({
 });
 
 const SearchOrCreateHeader = ({ showDialog }) =>
-    <div className="row add-organization-action">
+    <div className="row add-organization-action children-align-right">
         <div className="col-md-12">
             <button type="button" className="btn oz-btn-save pull-right"
                     onClick={showDialog}>
@@ -406,10 +406,10 @@ var Organization = React.createClass({
                     })
                 }
                 <div className="row organization-header">
-                    <div className="col-sm-5">
+                    <div className="col-sm-2">
                         <span title={this.props.org.id} className="title">{this.props.org.name}</span>
                     </div>
-                    <div className="col-sm-7">
+                    <div className="col-sm-10">
                         <div className="pull-right">
                             {buttons}
                         </div>
@@ -477,7 +477,7 @@ var Member = React.createClass({
         if (! member.self) {
             if (! this.state.edit) {
                 actions = (
-                    <div className="col-sm-6">
+                    <div className="actions">
                         <span className="pull-right action-icon" onClick={this.props.remove(member)}>
                             <i className="fa fa-trash"></i>
                         </span>
@@ -488,7 +488,7 @@ var Member = React.createClass({
                 );
             } else {
                 actions = (
-                    <div className="col-sm-6">
+                    <div className="actions">
                         <button type="button" className="btn oz-btn-cancel btn-xs pull-right" onClick={this.toggleEdit}>{t('ui.cancel')}</button>
                         <button type="button" className="btn oz-btn-save btn-xs btn-line pull-right" onClick={this.save}>{t('ui.save')}</button>
                     </div>
@@ -499,19 +499,22 @@ var Member = React.createClass({
         var adminStatus = this.renderAdmin();
 
         return (
-            <div key={member.id} className="row organization-member-row">
-                <div className="col-sm-3">{member.name}</div>
-                <div className="col-sm-3">{adminStatus}</div>
-                {actions}
+            <div key={member.id} className="row organization-member">
+                <div className="name">{member.name}</div>
+                <div className="status">{adminStatus}</div>
+                {
+                    actions || <div className="empty-space" />
+                }
             </div>
         );
     }
 });
 
 const ReadOnlyMember = ({ member }) =>
-    <div className="row organization-member-row">
-        <div className="col-sm-3">{member.name}</div>
-        <div className="col-sm-3">{member.self ? t('my.network.user') : t('my.network.admin')}</div>
+    <div className="row organization-member">
+        <div className="name">{member.name}</div>
+        <div className="status">{member.self ? t('my.network.user') : t('my.network.admin')}</div>
+        <div className="empty-space"></div>
     </div>;
 
 var InviteDialog = React.createClass({

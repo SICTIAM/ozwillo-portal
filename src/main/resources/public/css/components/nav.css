@@ -92,3 +92,9 @@
         border-radius: 0;
     }
 }
+
+@media (max-width: 425px) {
+    #oz-nav.navbar-auth ul.navbar-nav:first-child {
+        padding-left: 0px;
+    }
+}

@@ -240,7 +240,7 @@ class PasswordLink extends React.Component {
     render() {
         const passwordChangeEndpoint =  this.props.passwordChangeEndpoint;
         return <div className="form-group">
-            <div className="col-sm-9 col-sm-offset-3">
+            <div className="col-sm-9">
                 <a className="change-password btn btn-lg btn-warning" href={passwordChangeEndpoint}>{t('my.profile.account.changepassword')}</a>
             </div>
         </div>

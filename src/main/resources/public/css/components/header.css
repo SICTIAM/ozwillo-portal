@@ -49,3 +49,27 @@
     height: 100%;
     padding: 10px;
 }
+
+@media (max-width: 425px) {
+
+    .oz-header {
+        height: 120px;
+    }
+
+    .oz-header .logo-container {
+        width: 120px;
+    }
+
+    .oz-header .logo-app {
+        padding: 5px;
+    }
+
+    .oz-header .user-container {
+        right: 0px;
+        top: 0px;
+    }
+
+    .oz-header .user-container p {
+        margin: 0;
+    }
+}

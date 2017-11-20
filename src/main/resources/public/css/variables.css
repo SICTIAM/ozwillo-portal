@@ -1,4 +1,5 @@
 :root {
+    /* COLOR */
     --black-color: #4c4c4c;
     --black-2-color: #545454;
     --white-color: white;
@@ -16,4 +17,12 @@
     --dark-orange-color: #D67b00;
     --green-color: #43a047;
     --dark-green-color: #2e7d32;
+
+    /* SCREEN SIZE
+    --sm-phone-width: 320;
+    --m-phone-width: 375;
+    --l-phone-width: 425;
+    --m-tablet-width: 768;
+    --l-laptop-width: 1024;
+     */
 }

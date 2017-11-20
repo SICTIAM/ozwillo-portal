@@ -13,3 +13,7 @@
     color: var(--black-color);
 }
 
+.oz-form .input-group .form-control {
+    z-index: auto;
+}
+
