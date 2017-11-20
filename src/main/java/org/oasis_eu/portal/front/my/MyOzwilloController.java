@@ -62,11 +62,6 @@ public class MyOzwilloController extends PortalController {
         return i18n;
     }
 
-    @ModelAttribute("navigation")
-    public List<MyNavigation> getNavigation() {
-        return myNavigationService.getNavigation("dashboard");
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = {"/", "", "/dashboard"})
     public String show(Model model) {
         if (requiresLogout()) {
