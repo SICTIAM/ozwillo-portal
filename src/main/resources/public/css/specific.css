@@ -13,6 +13,7 @@
 @import 'components/nav.css';
 @import 'components/react-autosuggest.css';
 @import 'components/select.css';
+@import 'components/table.css';
 
 /* Pages */
 @import 'pages/dashboard.css';

@@ -1,14 +1,14 @@
 <header class="container-fluid oz-header" data-th-fragment="header" data-th-if="${user}">
 
-    <div class="user-container" data-th-data="@{/my/api/notifications/summary}">
+    <div class="user-container my-oasis" data-th-data="@{/my/api/notifications/summary}">
         <p class="text-center welcome" data-toggle="tooltip" data-placement="bottom"
            title="Vous avez 0 notification en attente">
             <a href="#" data-th-href="@{/my/notif}">
                 <i class="fa fa-user-circle-o"></i>
                 <span data-th-text="${user.nickname}">Benoit</span>
                 <span class="badge badge-notifications">
-                                0 <span class="sr-only">Unread notifications</span>
-                            </span>
+                    0 <span class="sr-only">Unread notifications</span>
+                </span>
             </a>
         </p>
     </div>

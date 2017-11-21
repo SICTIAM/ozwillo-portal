@@ -150,13 +150,13 @@ var NotificationTable = React.createClass({
         }
 
         return (
-            <div className="row">
+            <div className="column">
                 <div className="col-md-12">
                     <NotificationHeader filter={this.state.filter} updateStatus={this.filterByStatus}
                                         updateAppFilter={this.filterByApp} apps={this.state.apps}/>
                 </div>
                 <div className="col-md-12">
-                    <table className="table">
+                    <table className="table oz-table">
                         <thead>
                         <tr>
                             <SortableHeader name="date" label="date" size="2" sortBy={this.sortBy}
@@ -181,12 +181,12 @@ var NotificationTable = React.createClass({
 var SortableHeader = React.createClass({
     render: function () {
         var className = "col-sm-" + this.props.size + " sortable color";
-        var sortIcon = <i className="fa fa-sort"></i>;
+        var sortIcon = <i className="fa fa-sort icon"></i>;
         if (this.props.sort.prop == this.props.name) {
             if (this.props.sort.dir == -1) {
-                sortIcon = <i className="fa fa-sort-desc"></i>;
+                sortIcon = <i className="fa fa-sort-desc icon"></i>;
             } else {
-                sortIcon = <i className="fa fa-sort-asc"></i>;
+                sortIcon = <i className="fa fa-sort-asc icon"></i>;
             }
         }
 
