@@ -401,10 +401,11 @@ var Organization = React.createClass({
         return (
             <div className="organization">
                 {
-                    dialogs.map((item, index) => {
-                        return <item key={index} />;
+                    dialogs.map((Dialog, index) => {
+                        return <div key={index}>{Dialog}</div>;
                     })
                 }
+
                 <div className="row organization-header">
                     <div className="col-sm-2">
                         <span title={this.props.org.id} className="title">{this.props.org.name}</span>
