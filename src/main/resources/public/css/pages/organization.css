@@ -17,7 +17,7 @@ div.organization .organization-header .title {
 div.organization .organization-member{
     padding: 5px 15px;
     margin: 0 10px 0 10px;
-    border-bottom: 1px solid var(--white-color);
+    border-bottom: 1px solid var(--light-gray-color);
     line-height: 30px;
     color: #333;
 }
