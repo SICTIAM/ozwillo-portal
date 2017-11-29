@@ -15,10 +15,14 @@ var ContactLink = React.createClass({
     render: function () {
         return (
             <span>
-                <a className="footer-link" href="#">
-                    <span onClick={this.onClick}>{t('footer.contact')}</span>
-                </a>
-                <ContactModal ref="contactModal" />
+                {logged_in &&
+                    <a className="footer-link" href="#">
+                        <span onClick={this.onClick}>{t('footer.contact')}</span>
+                    </a>
+                }
+                {logged_in &&
+                    <ContactModal ref="contactModal"/>
+                }
             </span>
         )
     }
