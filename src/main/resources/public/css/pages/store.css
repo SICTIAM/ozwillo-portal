@@ -22,26 +22,32 @@
 }
 
 #store-apps .logo {
-    background: url("/img/cercle.png");
+    display: flex;
     position: absolute;
     top: 25px;
     z-index: 99;
     width: 164px !important;
     height: 164px !important;
-    display: block;
     margin-left: -82px;
     left: 50%;
+    background-color: var(--white-color);
+    border: solid 1px var(--light-gray-color);
+    border-radius: 100%;
 }
 
 #store-apps .logo img {
-    margin: 50px 0 0 50px;
+    margin: auto;
+    max-width: 64px;
+    max-height: 64px;
 }
 
 #store-apps .app .description {
-    border: 1px solid var(--gray-color);
+    border: 1px solid var(--light-gray-color);
     display: block;
     top: 82px;
     position: relative;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
 
 #store-apps .app .description .app-header {
@@ -106,11 +112,11 @@
 }
 
 #store-apps .app .description .app-status .btn-buy {
-    background-color: var(--pink-color);
+    background-color: var(--red-color);
 }
 
 #store-apps .app .description .app-status .btn-buy-indicator {
-    background-color: var(--red-color);
+    background-color: var(--dark-red-color);
 }
 
 #store-apps .app .description .app-status .btn-free {
@@ -127,6 +133,16 @@
 
 #store-apps .app .description .app-status .btn-installed-indicator {
     background-color: var(--dark-green-color);
+}
+
+#store-apps .app .description .app-status .btn-buy,
+#store-apps .app .description .app-status .btn-buy-indicator,
+#store-apps .app .description .app-status .btn-free,
+#store-apps .app .description .app-status .btn-free-indicator,
+#store-apps .app .description .app-status .btn-installed,
+#store-apps .app .description .app-status .btn-installed-indicator {
+    margin: 0;
+    color: var(--white-color);
 }
 
 #store-apps .oz-simple-modal .next {
