@@ -1,6 +1,6 @@
-<header class="container-fluid oz-header" data-th-fragment="header" data-th-if="${user}">
+<header class="container-fluid oz-header" data-th-fragment="header">
 
-    <div class="user-container my-oasis" data-th-data="@{/my/api/notifications/summary}">
+    <div class="user-container my-oasis" data-th-data="@{/my/api/notifications/summary}" data-th-if="${user}">
         <p class="text-center welcome" data-toggle="tooltip" data-placement="bottom"
            title="Vous avez 0 notification en attente">
             <a href="#" data-th-href="@{/my/notif}">
@@ -14,7 +14,11 @@
     </div>
 
     <div class="logo-container">
-        <a href="#" data-th-href="@{/my/dashboard}">
+        <a href="#" data-th-href="@{/my/dashboard}" data-th-if="${user}">
+            <img data-th-src="@{/img/logo-sictiam.png}" alt="Logo Sictiam" class="logo-app"/>
+        </a>
+
+        <a href="#" data-th-href="|${webHome}/${currentLanguage.locale.language}|" data-th-unless="${user}">
             <img data-th-src="@{/img/logo-sictiam.png}" alt="Logo Sictiam" class="logo-app"/>
         </a>
     </div>
