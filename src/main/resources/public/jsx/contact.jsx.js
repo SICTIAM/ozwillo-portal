@@ -15,12 +15,12 @@ var ContactLink = React.createClass({
     render: function () {
         return (
             <span>
-                {logged_in &&
+                { window.logged_in &&
                     <a className="footer-link" href="#">
                         <span onClick={this.onClick}>{t('footer.contact')}</span>
                     </a>
                 }
-                {logged_in &&
+                { window.logged_in &&
                     <ContactModal ref="contactModal"/>
                 }
             </span>
