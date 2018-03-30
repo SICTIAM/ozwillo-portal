@@ -156,10 +156,8 @@ if(TARGET === 'build' || TARGET === 'stats') {
                     use: extractCSS.extract({
                         fallback: 'style-loader',
                         use: [
-                            {
-                                loader: "css-loader", // translates CSS into CommonJS
-                                options: { minimize: true }
-                            }
+                            { loader: 'css-loader', options: { importLoaders: 1, minimize: true } },
+                            'postcss-loader'
                         ]
                     })
                 },
