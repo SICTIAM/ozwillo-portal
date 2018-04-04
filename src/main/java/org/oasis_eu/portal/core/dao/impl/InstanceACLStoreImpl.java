@@ -88,7 +88,7 @@ public class InstanceACLStoreImpl implements InstanceACLStore {
 
         logger.debug("Creating ACE for user {} - {}", user.getUserid(), user.getEmail());
         kernel.exchange(endpoint + "/acl/instance/{instanceId}", HttpMethod.POST,
-                new HttpEntity<>(ace(user.getUserid(), user.getEmail(), instanceId)), ACE.class, user(), instanceId);
+                new HttpEntity<>(ace(user.getUserid(), null, instanceId)), ACE.class, user(), instanceId);
     }
 
 
