@@ -5,22 +5,23 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.oasis_eu.portal.core.mongo.model.geo.GeographicalArea;
 import org.oasis_eu.portal.front.generic.BaseController;
-import org.oasis_eu.portal.services.PortalSystemUserService;
 import org.oasis_eu.portal.services.dc.geoarea.GeographicalAreaService;
 import org.oasis_eu.portal.services.dc.organization.DCOrganization;
 import org.oasis_eu.portal.services.dc.organization.DCOrganizationService;
 import org.oasis_eu.portal.services.dc.organization.OrganizationService;
-import org.oasis_eu.portal.services.kernel.UserMembershipService;
-import org.oasis_eu.portal.ui.UIOrganization;
 import org.oasis_eu.spring.datacore.DatacoreClient;
 import org.oasis_eu.spring.datacore.model.DCResource;
-import org.oasis_eu.spring.kernel.exception.WrongQueryException;
+import org.oasis_eu.spring.kernel.security.OpenIdCAuthentication;
+import org.oasis_eu.spring.kernel.security.OpenIdCService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -35,13 +36,10 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 @RestController
-@RequestMapping("/my/api/organization/import")
+@RequestMapping("/api/organization/import")
 class OrganizationImportController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrganizationImportController.class);
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private DatacoreClient datacore;
@@ -50,26 +48,30 @@ class OrganizationImportController extends BaseController {
     private OrganizationService organizationService;
 
     @Autowired
-    PortalSystemUserService portalSystemUserService;
-
-    @Autowired
-    UserMembershipService userMembershipService;
-
-    @Autowired
     DCOrganizationService dcOrganizationService;
+
+    @Autowired
+    private OpenIdCService openIdCService;
 
     @Autowired
     private GeographicalAreaService geographicalAreaService;
 
+    @Value("${kernel.auth.callback_uri:${application.url}/callback}")
+    private String callbackUri;
+
     @Value("${application.dcOrg.project: org_0}")
     private String dcOrgProjectName;// = "org_0";
+
+    @Value("${datacore.systemAdminUser.nonce:SET WHEN GETTING REFRESH TOKEN}")
+    private String refreshTokenNonce;
 
     @Value("${application.importPassword}")
     private String importPassword;
 
     @PostMapping
-    public ResponseEntity<String> organizationsImport(@RequestHeader String password,
-        @RequestParam("file") MultipartFile file, @RequestParam("email") String email) {
+    public ResponseEntity<String> organizationsImport(@RequestHeader String password, @RequestHeader String refreshToken,
+        @RequestParam("file") MultipartFile file) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         StringBuilder log = new StringBuilder();
         log.append("Starting log for organisation import");
         if (!passwordEncoder.matches(password, importPassword)) {
@@ -97,7 +99,7 @@ class OrganizationImportController extends BaseController {
                 StringBuilder city_uri = new StringBuilder();
                 StringBuilder country = new StringBuilder();
                 StringBuilder country_uri = new StringBuilder();
-                portalSystemUserService.runAs(() -> {
+                runAsUser(refreshToken, () -> {
                     List<GeographicalArea> contries = geographicalAreaService.findCountries("France");
                     if (contries.size() > 0) {
                         country.append(contries.get(0).getName());
@@ -130,18 +132,19 @@ class OrganizationImportController extends BaseController {
                     dcOrganization.setSector_type("PUBLIC_BODY");
                     dcOrganization.setJurisdiction(city.toString());
                     dcOrganization.setJurisdiction_uri(city_uri.toString());
-                    portalSystemUserService.runAs(() -> {
+                    runAsUser(refreshToken, () -> {
                         DCResource dcResource = datacore.getResourceFromURI(dcOrgProjectName.trim(), dcOrganization.getId()).getResource();
                         if (dcResource != null) dcOrganization.setVersion(String.valueOf(dcResource.getVersion()));
                         log.append("\nCreating / updating organization: ")
                             .append(dcOrganization.getLegal_name())
                             .append(" (").append(dcOrganization.getTax_reg_num()).append(")");
-                        UIOrganization uiOrganization = organizationService.create(dcOrganization, false);
                         try {
-                            log.append("\nInviting new admin to the organization");
-                            userMembershipService.createMembership(email, true, uiOrganization.getId());
-                        } catch (WrongQueryException e) {
-                            log.append("\nError while trying to invite new admin to the organization: ").append(e);
+                            organizationService.create(dcOrganization, false);
+                        } catch (Exception e) {
+                            log
+                                .append("\nError while trying to create the organization ")
+                                .append(dcOrganization.getLegal_name())
+                                .append(": ").append(e);
                         }
                     });
                     migrated++;
@@ -173,4 +176,20 @@ class OrganizationImportController extends BaseController {
         return new ResponseEntity<>(log.toString(), HttpStatus.OK);
     }
 
+
+    private void runAsUser(String refreshToken, Runnable runnable) {
+        Authentication endUserAuth = SecurityContextHolder.getContext().getAuthentication();
+        SecurityContextHolder.getContext().setAuthentication(null); // or UnauthAuth ?? anyway avoid to do next queries to Kernel with user auth
+        try {
+            String state = null, savedState = null;
+            OpenIdCAuthentication authentication = openIdCService.processAuthentication(
+                null, refreshToken.trim(), state, savedState, refreshTokenNonce.trim(), callbackUri.trim());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (runnable != null) {
+                runnable.run();
+            }
+        } finally {
+            SecurityContextHolder.getContext().setAuthentication(endUserAuth);
+        }
+    }
 }
