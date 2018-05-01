@@ -60,7 +60,7 @@ class OrganizationImportController extends BaseController {
     private String callbackUri;
 
     @Value("${application.dcOrg.project: org_0}")
-    private String dcOrgProjectName;// = "org_0";
+    private String dcOrgProjectName;
 
     @Value("${datacore.systemAdminUser.nonce:SET WHEN GETTING REFRESH TOKEN}")
     private String refreshTokenNonce;
@@ -69,7 +69,7 @@ class OrganizationImportController extends BaseController {
     private String importPassword;
 
     @PostMapping
-    public ResponseEntity<String> organizationsImport(@RequestHeader String password, @RequestHeader String refreshToken,
+    public ResponseEntity<String> importOrganization(@RequestHeader String password, @RequestHeader String refreshToken,
         @RequestParam("file") MultipartFile file) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         StringBuilder log = new StringBuilder();
@@ -87,7 +87,6 @@ class OrganizationImportController extends BaseController {
             int analysed = 0;
             int migrated = 0;
             for (CSVRecord record : records) {
-                String id = record.get(0);
                 String name = record.get(1);
                 String siren = record.get(2);
                 String nic = record.get(3);
@@ -100,15 +99,15 @@ class OrganizationImportController extends BaseController {
                 StringBuilder country = new StringBuilder();
                 StringBuilder country_uri = new StringBuilder();
                 runAsUser(refreshToken, () -> {
-                    List<GeographicalArea> contries = geographicalAreaService.findCountries("France");
-                    if (contries.size() > 0) {
-                        country.append(contries.get(0).getName());
-                        country_uri.append(contries.get(0).getUri());
+                    List<GeographicalArea> countries = geographicalAreaService.findCountries("France");
+                    if (!countries.isEmpty()) {
+                        country.append(countries.get(0).getName());
+                        country_uri.append(countries.get(0).getUri());
                     }
 
                     if (!StringUtils.isEmpty(country_uri.toString())) {
-                        List<GeographicalArea> cities = geographicalAreaService.findCities(cityCSV, country_uri.toString(), 0, 2);
-                        if (cities.size() > 0) {
+                        List<GeographicalArea> cities = geographicalAreaService.findCities(cityCSV, country_uri.toString(), 0, 1);
+                        if (!cities.isEmpty()) {
                             city.append(cities.get(0).getName());
                             city_uri.append(cities.get(0).getUri());
                         }
@@ -149,7 +148,7 @@ class OrganizationImportController extends BaseController {
                     });
                     migrated++;
                 } else {
-                    log.append("\nLocal authority not migrated due to uncompleted infos :");
+                    log.append("\nLocal authority not migrated due to uncomplete infos :");
                     log.append("\n---------------");
                     log.append("\nName : ").append(name);
                     log.append("\nSiren : ").append(siren);
@@ -165,9 +164,9 @@ class OrganizationImportController extends BaseController {
                 }
                 analysed++;
             }
-            log.append("\n=> ").append(analysed).append(" local authority analysed");
-            log.append("\n=> ").append(migrated).append(" local authority migrated");
-            log.append("\nEndind import");
+            log.append("\n=> ").append(analysed).append(" local authorities analysed");
+            log.append("\n=> ").append(migrated).append(" local authorities migrated");
+            log.append("\nEnd of import");
         } catch (IOException e) {
             logger.error("Error while trying to read the CSV file");
             log.append("\nError while trying to read the CSV file");
@@ -181,9 +180,8 @@ class OrganizationImportController extends BaseController {
         Authentication endUserAuth = SecurityContextHolder.getContext().getAuthentication();
         SecurityContextHolder.getContext().setAuthentication(null); // or UnauthAuth ?? anyway avoid to do next queries to Kernel with user auth
         try {
-            String state = null, savedState = null;
             OpenIdCAuthentication authentication = openIdCService.processAuthentication(
-                null, refreshToken.trim(), state, savedState, refreshTokenNonce.trim(), callbackUri.trim());
+                null, refreshToken.trim(), null, null, refreshTokenNonce.trim(), callbackUri.trim());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             if (runnable != null) {
                 runnable.run();
