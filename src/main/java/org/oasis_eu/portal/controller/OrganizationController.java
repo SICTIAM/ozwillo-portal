@@ -1,6 +1,7 @@
 package org.oasis_eu.portal.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.oasis_eu.portal.model.kernel.organization.UserMembership;
 import org.oasis_eu.portal.services.OrganizationService;
 import org.oasis_eu.portal.model.authority.UIOrganization;
 import org.oasis_eu.portal.model.dc.DCOrganization;
@@ -46,6 +47,11 @@ class OrganizationController {
     @GetMapping(value = "/info")
     public DCOrganization getOrganizationInfo(@RequestParam String dcId) {
         return organizationService.getOrganization(dcId);
+    }
+
+    @GetMapping(value = "/searchFromUserAndQuery")
+    public List<UserMembership> searchUserMembershipsFromQuery(@RequestParam String query) {
+        return organizationService.searchUserMembershipsFromQuery(query);
     }
 
     @PostMapping
