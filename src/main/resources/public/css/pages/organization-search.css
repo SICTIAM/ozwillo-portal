@@ -13,6 +13,12 @@
     width: 50%;
     min-width: 300px;
 }
+.organization-search .search .react-autosuggest__suggestions-container--open{
+    margin: auto;
+    left: 25%;
+    width: 50%;
+    min-width: 300px;
+}
 
 .organization-search .organisations-list .organization {
     margin: 15px 0;
@@ -48,6 +54,27 @@
 .organization-search .dropdown-content ul.list > li:after {
     display: none;
 }
+
+.organization-search .container-organization-history{
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+}
+.organization-search .container-organization-history .content{
+    width: 50%;
+    flex-wrap: wrap;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+
+}
+
+.organization-search .container-organization-history .content>*{
+  margin-top:10px;
+
+}
+
+
 
 
 @media (max-width: 425px) {

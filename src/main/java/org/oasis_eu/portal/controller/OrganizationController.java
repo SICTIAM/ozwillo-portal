@@ -1,6 +1,7 @@
 package org.oasis_eu.portal.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.oasis_eu.portal.model.kernel.organization.UserMembership;
 import org.oasis_eu.portal.services.OrganizationService;
 import org.oasis_eu.portal.model.authority.UIOrganization;
 import org.oasis_eu.portal.model.dc.DCOrganization;
@@ -16,8 +17,12 @@ import java.util.List;
 @RequestMapping("/my/api/organization")
 class OrganizationController {
 
+    private final OrganizationService organizationService;
+
     @Autowired
-    private OrganizationService organizationService;
+    public OrganizationController(OrganizationService organizationService) {
+        this.organizationService = organizationService;
+    }
 
     @GetMapping(value = "/search")
     public List<DCOrganization> searchOrganizations(@RequestParam String country_uri, @RequestParam String query) {
@@ -34,9 +39,6 @@ class OrganizationController {
         return organizationService.getMyOrganizations();
     }
 
-    @GetMapping(value = "/lazy")
-    public List<UIOrganization> getOrganizationsInLazyMode() { return organizationService.getMyOrganizationsInLazyMode(); }
-
     @GetMapping ("/{organizationId}")
     public UIOrganization organization(@PathVariable String organizationId) {
         return organizationService.getOrganizationFromKernel(organizationId);
@@ -45,6 +47,11 @@ class OrganizationController {
     @GetMapping(value = "/info")
     public DCOrganization getOrganizationInfo(@RequestParam String dcId) {
         return organizationService.getOrganization(dcId);
+    }
+
+    @GetMapping(value = "/searchFromUserAndQuery")
+    public List<UserMembership> searchUserMembershipsFromQuery(@RequestParam String query) {
+        return organizationService.searchUserMembershipsFromQuery(query);
     }
 
     @PostMapping
@@ -67,6 +74,11 @@ class OrganizationController {
         return organizationService.invite(invitation.email, invitation.admin, organizationId);
     }
 
+    @DeleteMapping(value = "/{organizationId}/invitation/{invitationId}")
+    public void removeInvitation(@PathVariable String organizationId, @RequestBody UIPendingOrganizationMember member) {
+        organizationService.removeInvitation(organizationId, member.getId(), member.getPendingMembershipEtag());
+    }
+
     @PutMapping("/{organizationId}/membership/{accountId}/role/{isAdmin}")
     public void updateRoleMember(@PathVariable String organizationId, @PathVariable String accountId,
                              @PathVariable boolean isAdmin) {
@@ -76,11 +88,6 @@ class OrganizationController {
     @DeleteMapping("/{organizationId}/membership/{accountId}")
     public void removeMember(@PathVariable String organizationId, @PathVariable String accountId) {
         organizationService.removeMember(organizationId, accountId);
-    }
-
-    @DeleteMapping(value = "/{organizationId}/invitation/{invitationId}")
-    public void removeInvitation(@PathVariable String organizationId, @RequestBody UIPendingOrganizationMember member) {
-        organizationService.removeInvitation(organizationId, member.getId(), member.getPendingMembershipEtag());
     }
 
     private static class InvitationRequest {

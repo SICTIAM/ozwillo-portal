@@ -1,5 +1,6 @@
 package org.oasis_eu.portal.services;
 
+import org.oasis_eu.portal.model.authority.UIOrganization;
 import org.oasis_eu.portal.services.kernel.CatalogStoreImpl;
 import org.oasis_eu.portal.services.kernel.SubscriptionStoreImpl;
 import org.oasis_eu.portal.model.kernel.ApplicationInstantiationRequest;
@@ -200,15 +201,20 @@ public class AppstoreService {
 
     private InstallationOption computeInstallationOption(CatalogEntry entry) {
         if (CatalogEntryType.SERVICE.equals(entry.getType())) {
-            Set<String> subscriptions = subscriptionStore.findByUserId(userInfoService.currentUser().getUserId()).stream().map(Subscription::getServiceId).collect(Collectors.toSet());
+            Set<String> subscriptions =
+                    subscriptionStore.findByUserId(userInfoService.currentUser().getUserId())
+                            .stream()
+                            .map(Subscription::getServiceId)
+                            .collect(Collectors.toSet());
             return subscriptions.contains(entry.getId()) ? InstallationOption.INSTALLED :
                 PaymentOption.FREE.equals(entry.getPaymentOption()) ? InstallationOption.FREE : InstallationOption.PAID;
         } else {
-            return organizationService.getMyAuthorities(true).stream()
-                .flatMap(authority -> applicationService.getMyInstances(authority, false).stream())
-                .anyMatch(instance -> instance.getApplicationInstance().getApplicationId().equals(entry.getId()))
-                ? InstallationOption.INSTALLED :
-                PaymentOption.FREE.equals(entry.getPaymentOption()) ? InstallationOption.FREE : InstallationOption.PAID;
+            return organizationService.getMyOrganizations()
+                    .stream()
+                    .filter(UIOrganization::isAdmin)
+                    .flatMap(uiOrganization -> applicationService.getMyInstances(uiOrganization, false).stream())
+                    .anyMatch(instance -> instance.getApplicationInstance().getApplicationId().equals(entry.getId()))
+                        ? InstallationOption.INSTALLED : PaymentOption.FREE.equals(entry.getPaymentOption()) ? InstallationOption.FREE : InstallationOption.PAID;
         }
     }
 }
