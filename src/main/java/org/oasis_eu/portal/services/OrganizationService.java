@@ -309,7 +309,6 @@ public class OrganizationService {
 
         List<UserMembership> userMemberships = userMembershipService.getMembershipsOfUser(userId);
         List<Organization> organizationList = getOrganizationsFromUsersMemberships(userMemberships);
-
         for (Organization org : organizationList) {
             UIOrganization uiOrg = UIOrganization.fromKernelOrganization(org, computeDeletionPlanned(org), getUserName(org.getStatusChangeRequesterId()));
             for(UserMembership userMembership : userMemberships){
@@ -338,15 +337,13 @@ public class OrganizationService {
 
         Flux<Organization> organizationFlux =  Flux
                 .fromIterable(userMemberships)
-                .flatMap(membership -> Mono
-                        .fromCallable(() -> organizationStore.find(membership.getOrganizationId())))
-                .subscribeOn(scheduler);
+                .flatMap(membership ->
+                        Mono.fromCallable(() ->
+                                organizationStore.find(membership.getOrganizationId()))
+                                .subscribeOn(scheduler)
+                );
 
-        List<Organization> result = organizationFlux
-                .toStream()
-                .collect(toList());
-
-        return result;
+        return organizationFlux.toStream().collect(toList());
     }
 
 
