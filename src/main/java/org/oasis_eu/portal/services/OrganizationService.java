@@ -7,6 +7,7 @@ import org.oasis_eu.portal.model.kernel.instance.ApplicationInstance;
 import org.oasis_eu.portal.model.kernel.organization.OrgMembership;
 import org.oasis_eu.portal.model.kernel.organization.PendingOrgMembership;
 import org.oasis_eu.portal.model.kernel.organization.UserMembership;
+import org.oasis_eu.portal.model.user.User;
 import org.oasis_eu.portal.model.user.UserGeneralInfo;
 import org.oasis_eu.portal.services.dc.DCOrganizationService;
 import org.oasis_eu.portal.model.dc.DCOrganization;
@@ -21,11 +22,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.RequestContextUtils;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -35,6 +41,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.concurrent.Executors.newFixedThreadPool;
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class OrganizationService {
@@ -299,10 +308,15 @@ public class OrganizationService {
         String userId = userInfoService.currentUser().getUserId();
 
         List<UserMembership> userMemberships = userMembershipService.getMembershipsOfUser(userId);
-        for (UserMembership u : userMemberships) {
-            Organization org = organizationStore.find(u.getOrganizationId());
+        List<Organization> organizationList = getOrganizationsFromUsersMemberships(userMemberships);
+
+        for (Organization org : organizationList) {
             UIOrganization uiOrg = UIOrganization.fromKernelOrganization(org, computeDeletionPlanned(org), getUserName(org.getStatusChangeRequesterId()));
-            uiOrg.setAdmin(u.isAdmin());
+            for(UserMembership userMembership : userMemberships){
+                if(userMembership.getOrganizationId().equals(org.getId())){
+                    uiOrg.setAdmin(userMembership.isAdmin());
+                }
+            }
             organizations.add(uiOrg);
         }
 
@@ -316,8 +330,25 @@ public class OrganizationService {
                 .sorted(Comparator.comparing(UIOrganization::getId,
                         (id1, id2) -> (userId.equals(id1)) ? 1 : (userId.equals(id2))? -1 : 0)
                         .thenComparing(UIOrganization::getName, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
+
+    private List<Organization> getOrganizationsFromUsersMemberships(List<UserMembership> userMemberships){
+        Scheduler scheduler = Schedulers.fromExecutor(newFixedThreadPool(10));
+
+        Flux<Organization> organizationFlux =  Flux
+                .fromIterable(userMemberships)
+                .flatMap(membership -> Mono
+                        .fromCallable(() -> organizationStore.find(membership.getOrganizationId())))
+                .subscribeOn(scheduler);
+
+        List<Organization> result = organizationFlux
+                .toStream()
+                .collect(toList());
+
+        return result;
+    }
+
 
     private UIOrganization getKernelOrganization(String organizationId) {
         String userId = userInfoService.currentUser().getUserId();
@@ -410,7 +441,7 @@ public class OrganizationService {
                     })
                     // NB. self is among returned admins
                     .sorted(Comparator.comparing(UIOrganizationMember::getName, String.CASE_INSENSITIVE_ORDER))
-                    .collect(Collectors.toList());
+                    .collect(toList());
         } else {
             // return self in first position
             // which was missing : #159 Possibility to see who are the admins of an organization one belongs to
@@ -419,7 +450,7 @@ public class OrganizationService {
                     Stream.of(selfNonAdminUIOrganizationMember()),
                     orgAdmins.stream().map(this::toUIOrganizationMember))
                     // NB. self is already in first position, so ne need to sort
-                    .collect(Collectors.toList());
+                    .collect(toList());
         }
     }
 
@@ -438,7 +469,7 @@ public class OrganizationService {
                     // NB. Organize first by admin right, then by email
                     .sorted((member1, member2) -> member1.isAdmin() ? -1 : (member2.isAdmin() ? 1 : member1.getEmail()
                             .compareToIgnoreCase(member2.getEmail())))
-                    .collect(Collectors.toList());
+                    .collect(toList());
         } else {
             return null;
         }
