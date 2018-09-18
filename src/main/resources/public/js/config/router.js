@@ -19,7 +19,7 @@ import Notification from '../pages/notifications';
 import OrganizationCreate from '../pages/organization-create';
 import OrganizationSearch from '../pages/organization-search';
 import OrganizationDesc from '../pages/organization-desc';
-import Store from '../pages/store';
+import Store from '../pages/app-store';
 
 // Actions
 import {fetchUserInfo} from "../actions/user";
