@@ -1,18 +1,13 @@
-.pill-label {
+.badge.pill-label {
     background-color: var(--tertiary-color);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    flex-grow: 1;
-    border-radius: 50px;
+    color: var(--primary-color);
     border: solid 1px var(--primary-color);
-    width: 100px;
-    max-width: 150px;
-    height: 35px;
+    font-size: 1em;
     cursor: pointer;
-    margin: 0 0.2em 1em 0.2em;
-    transition: all 0.3s;
+    margin: 0 0.5em 0.5em 0.5em;
+    padding: 1rem 1rem;
+    min-width: 8rem;
+    border-radius: 2rem;
 }
 .pill-label:hover{
     box-shadow: 0.2em 0.2em 0.4em rgba(0, 0, 0, .3);

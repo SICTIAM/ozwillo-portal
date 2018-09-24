@@ -33,16 +33,14 @@ export default class SideNav extends React.Component {
 
     _displaySideNavButton = () => {
         const {isOpen} = this.state;
-        const {activeFiltersNumber} = this.props;
+        const {isOpenChildren} = this.props;
         if (!isOpen) {
             return (
                 <React.Fragment>
                     <div className={"side-nav-tongue"} onClick={() => this._switchOpenState()}>
                         <i className={"fa fa-chevron-right"}/>
                     </div>
-                    {activeFiltersNumber > 0 &&
-                        <div className={"badge-filter"}>{activeFiltersNumber}</div>
-                    }
+                    {isOpenChildren}
                 </React.Fragment>
 
             )
@@ -55,7 +53,7 @@ export default class SideNav extends React.Component {
                 <div style={this._displaySideNav()} className={"side-nav"}>
                     <i className={"fa fa-chevron-left"} onClick={() => this._switchOpenState()}/>
                     <div className={"content"}>
-                        <SearchAppForm updateFilter={this.props.updateFilters}/>
+                        {this.props.children}
                     </div>
                 </div>
                 {this._displaySideNavButton()}
@@ -66,6 +64,6 @@ export default class SideNav extends React.Component {
 }
 
 SideNav.propTypes = {
-    updateFilters: PropTypes.func.isRequired,
-    activeFiltersNumber: PropTypes.number.isRequired
+    children: PropTypes.node,
+    isOpenChildren: PropTypes.node
 };

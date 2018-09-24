@@ -12,7 +12,7 @@ export default class PillButton extends React.Component {
                     id={id}
                     type="checkbox"
                     className={"pill-input"}/>
-                <label htmlFor={id} className={"pill-label"}>
+                <label htmlFor={id} className={"pill-label badge badge-pill"}>
                     {label}
                 </label>
             </React.Fragment>
