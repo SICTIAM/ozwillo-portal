@@ -38,6 +38,7 @@
 @import 'pages/profile.css';
 @import 'pages/store.css';
 @import 'pages/synchronize-fc-profile.css';
+@import 'pages/app-store.css';
 /* Helper */
 @import './helper.css';
 

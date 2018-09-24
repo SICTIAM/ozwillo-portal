@@ -2,7 +2,7 @@
     margin-top: 1em;
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
     align-items: center;
     flex-grow: 1;

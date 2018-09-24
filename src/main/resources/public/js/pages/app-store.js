@@ -3,6 +3,7 @@ import App from "../components/app";
 import customFetch from "../util/custom-fetch";
 import FilterApp from "../model/filter-app";
 import SideNav from "../components/side-nav";
+import SearchAppForm from "../components/search-apps-form";
 
 export default class AppStore extends React.Component {
 
@@ -91,33 +92,21 @@ export default class AppStore extends React.Component {
 
     render() {
         const {loading, activeFiltersNumber} = this.state;
+        const filterCounter =  activeFiltersNumber > 0 &&
+            <div className={"badge-filter"}>{activeFiltersNumber}</div>;
+
         return (
             loading ?
                 null
                 :
-                <div style={styles.container}>
-                    <SideNav activeFiltersNumber={activeFiltersNumber} updateFilters={this.updateFilters}/>
-                    <div style={styles.appContainer} id="store-apps">
+                <div className={"app-store-wrapper"}>
+                    <SideNav isOpenChildren={filterCounter}>
+                        <SearchAppForm updateFilter={this.updateFilters}/>
+                    </SideNav>
+                    <div className={"app-store-container"} id="store-apps">
                         {this._displayApps()}
                     </div>
                 </div>
         )
     }
 }
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'row',
-        flex: '1',
-    },
-    appContainer: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        flex: '1',
-        padding: '1em 0 1em 0',
-        justifyContent: 'center',
-    },
-
-};
