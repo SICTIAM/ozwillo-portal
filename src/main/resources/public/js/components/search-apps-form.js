@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from 'prop-types';
 import customFetch from "../util/custom-fetch";
 import GeoAreaAutosuggest from "./autosuggests/geoarea-autosuggest";
-import LabelInput from "./label-input";
+import LabelSection from "./label-section";
+import PillButton from "./pill-button";
 
 export default class SearchAppsForm extends React.Component {
 
@@ -14,7 +15,7 @@ export default class SearchAppsForm extends React.Component {
             free: false,
             paid: false
         },
-        audience:{
+        audience: {
             publicbodies: false,
             citizens: false,
             companies: false
@@ -34,6 +35,7 @@ export default class SearchAppsForm extends React.Component {
                 let languages = Object.assign([], res.languages);
                 languages.unshift('all');
                 this.setState({languages: languages, selectedLanguage: res.language});
+                this.props.updateFilter(null, "selectedLanguage", res.language);
             }
         )
     };
@@ -50,6 +52,9 @@ export default class SearchAppsForm extends React.Component {
 
     _handleGeoChange = (event, value) => {
         this.setState({geoArea: value});
+        if(value===''){
+            this.props.updateFilter(null, "geoAreaAncestorsUris", '');
+        }
     };
     _handleOnPaymentChange = (event) => {
         const inputModified = event.target.name;
@@ -74,63 +79,46 @@ export default class SearchAppsForm extends React.Component {
             <option key={language} value={language}>{this.context.t(`store.language.${language}`)}</option>
         );
 
-
-        //TODO create pills for the input checked
         return (
             <div id="search-apps-form">
                 {/*LANGUAGE*/}
-                <LabelInput label={this.context.t('languages-supported-by-applications')}>
-                            <select id="language" className="form-control"
-                                    onChange={this._handleLanguageClicked}
-                                    value={selectedLanguage}>
-                                {languageComponents}
-                            </select>
-                </LabelInput>
+                <LabelSection label={this.context.t('languages-supported-by-applications')}>
+                    <select id="language" className="form-control"
+                            onChange={this._handleLanguageClicked}
+                            value={selectedLanguage}>
+                        {languageComponents}
+                    </select>
+                </LabelSection>
                 {/*GEOAREA*/}
-                <LabelInput label={this.context.t('geoarea')}>
-                        <GeoAreaAutosuggest name="geoSearch"
-                                            countryUri=""
-                                            endpoint="areas"
-                                            onChange={this._handleGeoChange}
-                                            onGeoAreaSelected={this._handleGeoSelected}
-                                            value={this.state.geoArea}
-                        />
-                </LabelInput>
+                <LabelSection label={this.context.t('geoarea')}>
+                    <GeoAreaAutosuggest name="geoSearch"
+                                        countryUri=""
+                                        endpoint="areas"
+                                        onChange={this._handleGeoChange}
+                                        onGeoAreaSelected={this._handleGeoSelected}
+                                        value={this.state.geoArea}
+                    />
+                </LabelSection>
                 {/*MODE*/}
-                <LabelInput label={this.context.t('mode')}>
-                    <label className="checkbox-inline">
-                        <input type="checkbox" name="free" checked={payment.free}
-                               onChange={this._handleOnPaymentChange}/>{this.context.t('free')}
-                    </label>
-                    <label className="checkbox-inline">
-                        <input type="checkbox" name="paid" checked={payment.paid}
-                               onChange={this._handleOnPaymentChange}/>{this.context.t('paid')}
-                    </label>
-                </LabelInput>
+                <LabelSection label={this.context.t('mode')}>
+                    <PillButton label={this.context.t('free')} id={"free-checkbox"}
+                                checked={payment.free} name={'free'} onChange={this._handleOnPaymentChange}/>
+
+                    <PillButton label={this.context.t('paid')} id={"paid-checkbox"}
+                                checked={payment.paid} name={'paid'} onChange={this._handleOnPaymentChange}/>
+
+                </LabelSection>
                 {/*AUDIENCE*/}
-                <LabelInput label={this.context.t('audience')}>
-                    <div className="checkbox">
-                        <label>
-                            <input type="checkbox" name="citizens"
-                                   checked={audience.citizens}
-                                   onChange={this._handleAudienceChange}/>{this.context.t('citizens')}
-                        </label>
-                    </div>
-                    <div className="checkbox">
-                        <label>
-                            <input type="checkbox" name="publicbodies"
-                                   checked={audience.publicbodies}
-                                   onChange={this._handleAudienceChange}/>{this.context.t('publicbodies')}
-                        </label>
-                    </div>
-                    <div className="checkbox">
-                        <label>
-                            <input type="checkbox" name="companies"
-                                   checked={audience.companies}
-                                   onChange={this._handleAudienceChange}/>{this.context.t('companies')}
-                        </label>
-                    </div>
-                </LabelInput>
+                <LabelSection label={this.context.t('audience')}>
+                    <PillButton label={this.context.t('citizens')} id={"citizens-checkbox"}
+                                checked={audience.citizens} name={'citizens'} onChange={this._handleAudienceChange}/>
+
+                    <PillButton label={this.context.t('publicbodies')} id={"publicbodies-checkbox"}
+                                checked={audience.publicbodies} name={'publicbodies'} onChange={this._handleAudienceChange}/>
+
+                    <PillButton label={this.context.t('companies')} id={"companies-checkbox"}
+                                checked={audience.companies} name={'companies'} onChange={this._handleAudienceChange}/>
+                </LabelSection>
 
 
             </div>

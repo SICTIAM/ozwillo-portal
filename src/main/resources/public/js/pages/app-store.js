@@ -57,7 +57,7 @@ export default class AppStore extends React.Component {
         for(let key in filters){
             let elem = filters[key];
             if ((elem && Array.isArray(elem) && elem.length > 0)
-                || (elem && !Array.isArray(elem))) {
+                || (elem && elem !=='' && !Array.isArray(elem))) {
                 counter++;
             }
         }

@@ -1,24 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default class LabelInput extends React.PureComponent{
+export default class LabelSection extends React.PureComponent{
     render(){
         const {label, children} = this.props;
         return (
-        <div className="form-group">
-            <label htmlFor="geoSearch"
-                   className="control-label">
+        <div className="label-section form-group">
+            <label className="control-label">
                 {label}
             </label>
-            <div className={"input-content"}>
+            <div className={"label-section-content"}>
                 {children}
             </div>
         </div>
         )
     }
-
 }
-LabelInput.propTypes = {
+
+LabelSection.propTypes = {
     label: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
 };
