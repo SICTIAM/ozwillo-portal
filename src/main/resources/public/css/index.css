@@ -27,6 +27,8 @@
 @import 'components/forms/organization-invitation-form.css';
 @import 'components/side-nav.css';
 @import 'components/search-apps-form.css';
+@import 'components/label-section.css';
+@import 'components/pill-button.css';
 /* Pages */
 @import 'pages/dashboard.css';
 @import 'pages/notifications.css';

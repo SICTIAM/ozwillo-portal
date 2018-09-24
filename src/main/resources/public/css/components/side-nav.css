@@ -56,6 +56,6 @@
     align-items: center;
     color: var(--tertiary-color);
     position: relative;
-    bottom: -15px;
-    left: -15px;
+    bottom: -0.3em;
+    left: -1em;
 }
