@@ -9,6 +9,36 @@
     flex-flow: wrap row;
     flex: 1;
     padding: 1em 0 1em 0;
-    justify-content: center;
     align-items: start;
+    max-height: 80vh;
+    overflow-y: auto;
+    justify-content: center;
+}
+
+.app-list{
+    padding-top: 3.5em;
+    padding-bottom: 3.5em;
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap row;
+
+}
+
+.app-store-container .search-bar{
+    width: 50%;
+    position: absolute;
+    z-index: 10;
+    border-radius: 50px;
+    box-shadow: 0.2em 0.2em 0.4em rgba(0, 0, 0, .3);
+    transition: all 0.3s ease-in;
+}
+
+.app-store-container .search-bar.invisible{
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.app-store-wrapper::-webkit-scrollbar-thumb{
+    background: red;
 }
