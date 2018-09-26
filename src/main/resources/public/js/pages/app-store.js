@@ -8,14 +8,16 @@ import SearchAppForm from "../components/search-apps-form";
 export default class AppStore extends React.Component {
 
     constructor() {
-        super()
+        super();
     }
 
     state = {
         filters: new FilterApp(),
         loading: true,
         maybeMoreApps: false,
-        activeFiltersNumber: 0
+        activeFiltersNumber: 0,
+        isSearchBarVisible: "visible",
+        scrollValue: 0
     };
 
     componentDidMount() {
@@ -32,6 +34,10 @@ export default class AppStore extends React.Component {
         }
         this.setState({filters: filters});
         this._getApps();
+    };
+
+    _handleFullTextSearchChanged = (event) => {
+        this.updateFilters(null, "searchText", event.target.value);
     };
 
     _transformSearchFilters = () => {
@@ -55,10 +61,10 @@ export default class AppStore extends React.Component {
 
     _countActiveFilters = (filters) => {
         let counter = 0;
-        for(let key in filters){
+        for (let key in filters) {
             let elem = filters[key];
             if ((elem && Array.isArray(elem) && elem.length > 0)
-                || (elem && elem !=='' && !Array.isArray(elem))) {
+                || (elem && elem !== '' && !Array.isArray(elem))) {
                 counter++;
             }
         }
@@ -90,9 +96,22 @@ export default class AppStore extends React.Component {
         });
     };
 
+    _handleScroll = (e) => {
+        const newScrollValue = e.target.scrollTop;
+        const {scrollValue} = this.state;
+        let diff = Math.abs(newScrollValue - scrollValue);
+        if(diff > 5) {
+            if (newScrollValue > scrollValue) {
+                this.setState({isSearchBarVisible: "invisible", scrollValue: newScrollValue});
+            } else {
+                this.setState({isSearchBarVisible: "visible",  scrollValue: newScrollValue});
+            }
+        }
+    };
+
     render() {
         const {loading, activeFiltersNumber} = this.state;
-        const filterCounter =  activeFiltersNumber > 0 &&
+        const filterCounter = activeFiltersNumber > 0 &&
             <div className={"badge-filter"}>{activeFiltersNumber}</div>;
 
         return (
@@ -103,8 +122,15 @@ export default class AppStore extends React.Component {
                     <SideNav isOpenChildren={filterCounter}>
                         <SearchAppForm updateFilter={this.updateFilters}/>
                     </SideNav>
-                    <div className={"app-store-container"} id="store-apps">
-                        {this._displayApps()}
+                    <div className={"app-store-container"} id="store-apps" onScroll={this._handleScroll}>
+
+                        <input type="text" id="fulltext"
+                               className={"form-control search-bar " + this.state.isSearchBarVisible}
+                               onChange={this._handleFullTextSearchChanged}
+                               placeholder={"keywords"} name="fullTextSearch"/>
+                        <div className={"app-list"}>
+                            {this._displayApps()}
+                        </div>
                     </div>
                 </div>
         )
