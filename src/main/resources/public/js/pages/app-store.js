@@ -17,12 +17,28 @@ export default class AppStore extends React.Component {
         maybeMoreApps: false,
         activeFiltersNumber: 0,
         isSearchBarVisible: "visible",
-        scrollValue: 0
+        scrollValue: 0,
+        config: {}
     };
 
     componentDidMount() {
-        this._getApps();
+        this.initialize();
     }
+
+    initialize = () => {
+        this._fetchConfig().then(() => {
+            this._getApps();
+        });
+
+    };
+
+    _fetchConfig = async () => {
+        await customFetch('/api/config').then(
+            config => {
+                this.setState({config: config})
+            }
+        )
+    };
 
     updateFilters = (category, key, value) => {
         const filters = this.state.filters;
@@ -91,7 +107,7 @@ export default class AppStore extends React.Component {
     _displayApps = () => {
         return this.state.apps.map((app) => {
             return (
-                <App key={app.id} app={app}/>
+                <App key={app.id} app={app} config={this.state.config}/>
             );
         });
     };
@@ -110,17 +126,18 @@ export default class AppStore extends React.Component {
     };
 
     render() {
-        const {loading, activeFiltersNumber} = this.state;
+        const {loading, activeFiltersNumber, config} = this.state;
         const filterCounter = activeFiltersNumber > 0 &&
             <div className={"badge-filter"}>{activeFiltersNumber}</div>;
 
         return (
             loading ?
+                //TODO add a spinner
                 null
                 :
                 <div className={"app-store-wrapper"}>
                     <SideNav isOpenChildren={filterCounter}>
-                        <SearchAppForm updateFilter={this.updateFilters}/>
+                        <SearchAppForm updateFilter={this.updateFilters} config={config}/>
                     </SideNav>
                     <div className={"app-store-container"} id="store-apps" onScroll={this._handleScroll}>
 

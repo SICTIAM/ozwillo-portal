@@ -25,19 +25,17 @@ export default class SearchAppsForm extends React.Component {
     };
 
     componentDidMount() {
-        this._fetchLanguages();
+        this.initialize();
 
     }
 
-    _fetchLanguages = () => {
-        customFetch('/api/config').then(
-            res => {
-                let languages = Object.assign([], res.languages);
-                languages.unshift('all');
-                this.setState({languages: languages, selectedLanguage: res.language});
-                this.props.updateFilter(null, "selectedLanguage", res.language);
-            }
-        )
+    initialize = () => {
+        const {config} = this.props;
+        let languages = Object.assign([], config.languages);
+        languages.unshift('all');
+        this.setState({languages: languages, selectedLanguage: config.language});
+        this.props.updateFilter(null, "selectedLanguage", config.language);
+
     };
 
     _handleLanguageClicked = (event) => {

@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import AppModal from "./store-install-app";
+import { withRouter } from 'react-router-dom'
 
-export default class App extends React.PureComponent{
 
-    openApp = () =>{
-        this.modal.open();
+class App extends React.PureComponent{
+
+    openInstallAppPage = () =>{
+        const {app, config} = this.props;
+        const installAppPage = `/${config.language}/store/${app.type}/${app.id}`;
+        this.props.history.push(installAppPage);
+
     };
 
     render = () => {
@@ -22,13 +26,11 @@ export default class App extends React.PureComponent{
 
         return (
             <div className="col-lg-2 col-md-3 col-sm-4 col-xs-6 container-app">
-                <AppModal app={this.props.app} wrappedComponentRef={
-                    c => { this.modal = c && c.getWrappedInstance() }}/>
                 <div className="app">
                     <div className="logo">
                         <img src={app.icon}/>
                     </div>
-                    <div className="description" onClick={() => this.openApp()}>
+                    <div className="description" onClick={() => this.openInstallAppPage()}>
                         {pubServiceIndicator}
                         <div className="app-header">
                             <span className="app-name">{app.name}</span>
@@ -44,8 +46,11 @@ export default class App extends React.PureComponent{
 }
 
 App.propTypes = {
-    app: PropTypes.object
+    app: PropTypes.object,
+    config: PropTypes.object
 };
+
+export default withRouter(App);
 
 
 

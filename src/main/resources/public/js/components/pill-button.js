@@ -25,5 +25,5 @@ PillButton.propTypes = {
     onChange: PropTypes.func,
     id: PropTypes.string.isRequired,
     name: PropTypes.string,
-    checked: PropTypes.string
+    checked: PropTypes.bool
 };
