@@ -8,8 +8,10 @@ class App extends React.PureComponent{
     openInstallAppPage = () =>{
         const {app, config} = this.props;
         const installAppPage = `/${config.language}/store/${app.type}/${app.id}`;
-        this.props.history.push(installAppPage);
-
+        this.props.history.push({
+            pathname: installAppPage,
+            state: {app: app, config: config}
+        });
     };
 
     render = () => {

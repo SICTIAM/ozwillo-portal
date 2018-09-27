@@ -39,8 +39,10 @@
 @import 'pages/store.css';
 @import 'pages/synchronize-fc-profile.css';
 @import 'pages/app-store.css';
+@import 'pages/app-install.css';
 /* Helper */
 @import './helper.css';
+
 
 /* styles needed to have a responsive fixed footer
      while having main content (with page-row-expanded class) taking up all available space */

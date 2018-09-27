@@ -1,0 +1,54 @@
+.app-install-wrapper{
+    padding: 3em 1em 0 1em;
+}
+
+.app-install-wrapper .header-app-install{
+    justify-content: space-between;
+}
+.app-install-wrapper .header-app-install .information-app{
+}
+
+.app-install-wrapper .header-app-install .information-app img{
+    width: 8em;
+    height: 8em;
+}
+
+.app-install-wrapper .header-app-install .information-app .information-app-details{
+    display: flex;
+    justify-content: center;
+    flex-flow: column wrap;
+    max-width: 50%;
+    margin-left: 2em;
+}
+.app-install-wrapper .app-install-carousel{
+    padding: 5em 5em 2em 5em;
+}
+.app-install-wrapper .app-install-description{
+    text-align: justify;
+    justify-content: center;
+    padding: 2em 0 2em 0;
+}
+
+.app-install-carousel .screenshot{
+    max-width: 25em;
+    max-height: 25em;
+}
+
+.slick-slide{
+    padding: 0 1em 0 1em;
+}
+
+.slick-prev::before,
+.slick-next::before
+{
+    color: black !important;
+}
+
+.slick-slide .content{
+    width: 90%;
+}
+.slick-list{
+    height: 15em !important;
+}
+
+
