@@ -24,6 +24,13 @@
 
 }
 
+.app-store-wrapper .app-store-container-loading{
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    font-size: 4em;
+}
+
 .app-store-container .search-bar{
     width: 50%;
     position: absolute;

@@ -130,10 +130,15 @@ export default class AppStore extends React.Component {
         const filterCounter = activeFiltersNumber > 0 &&
             <div className={"badge-filter"}>{activeFiltersNumber}</div>;
 
+
+
         return (
             loading ?
-                //TODO add a spinner
-                null
+                <div className={"app-store-wrapper"}>
+                    <div className="app-store-container-loading text-center">
+                        <i className="fa fa-spinner fa-spin loading"/>
+                    </div>
+                </div>
                 :
                 <div className={"app-store-wrapper"}>
                     <SideNav isOpenChildren={filterCounter}>

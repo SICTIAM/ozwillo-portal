@@ -67,8 +67,9 @@ export default class AppInstall extends React.Component {
             speed: 500,
             slidesToScroll: 1,
             variableWidth: true,
-            accessibility: true
+            accessibility: true,
         };
+
         return (
             <div className={"app-install-wrapper"}>
                 <div className={"flex-row header-app-install"}>
