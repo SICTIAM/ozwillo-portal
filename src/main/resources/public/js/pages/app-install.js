@@ -1,9 +1,10 @@
 import React from "react";
 import Slider from "react-slick";
-import customFetch from "../util/custom-fetch";
 import ModalImage from "../modal-image";
+import {fetchAppDetails, fetchRateApp} from "../util/store-service";
+import RatingWrapper from "../components/rating";
 
-export default class AppInstall extends React.Component{
+export default class AppInstall extends React.Component {
 
     state = {
         app: {},
@@ -19,23 +20,31 @@ export default class AppInstall extends React.Component{
         config: {},
     };
 
-    componentDidMount(){
+    componentDidMount() {
         const {app, config} = this.props.location.state;
         this.setState({app: app, config: config}, () => {
             this.loadApp()
         });
-
-
     }
 
-    loadApp = () => {
+
+    loadApp = async () => {
         const {app} = this.state;
-        customFetch(`/api/store/details/${app.type}/${app.id}`)
-            .then((data) => this.setState({appDetails: data}));
+        const data = await fetchAppDetails(app.type, app.id);
+        this.setState({appDetails: data});
+    };
+
+
+    _rateApp = async (rate) => {
+        let {app, appDetails} = this.state;
+        await fetchRateApp(app.type, app.id, rate);
+        appDetails.rateable = false;
+        appDetails.rating = rate;
+        this.setState({appDetails});
     };
 
     _displayScreenShots = (arrayScreenshots) => {
-        if(arrayScreenshots) {
+        if (arrayScreenshots) {
             return arrayScreenshots.map((screenshot, index) => {
                 return (
                     <div key={index} onClick={() => this._openModal(screenshot)}>
@@ -51,7 +60,7 @@ export default class AppInstall extends React.Component{
     };
 
 
-    render(){
+    render() {
         const {app, appDetails, config} = this.state;
         const settings = {
             dots: true,
@@ -60,7 +69,7 @@ export default class AppInstall extends React.Component{
             variableWidth: true,
             accessibility: true
         };
-        return(
+        return (
             <div className={"app-install-wrapper"}>
                 <div className={"flex-row header-app-install"}>
                     <div className={"information-app flex-row"}>
@@ -69,6 +78,10 @@ export default class AppInstall extends React.Component{
                             <p><strong>{app.name}</strong></p>
                             <p>{app.provider}</p>
                             <p>{app.description}</p>
+                            <div className={"rate-content"}>
+                                <RatingWrapper rating={appDetails.rating} rateable={appDetails.rateable}
+                                               rate={this._rateApp}/>
+                            </div>
                         </div>
                     </div>
                     <div className={"install-app"}>
@@ -76,7 +89,9 @@ export default class AppInstall extends React.Component{
                     </div>
                 </div>
 
-                {appDetails.screenshots.length > 0 &&
+
+                {
+                    appDetails.screenshots.length > 0 &&
                     <div className={"app-install-carousel"}>
                         <div className={"carousel-container"}>
                             <Slider {...settings}>
@@ -89,17 +104,19 @@ export default class AppInstall extends React.Component{
                 <div className={"flex-row app-install-description"}>
                     {app.description}
                 </div>
-            <ModalImage ref={"modalImage"}/>
+                < ModalImage
+                    ref={"modalImage"}
+                />
             </div>
 
             // App Install Container
-                //First (row)
-                    // App information
-                    //Install form
-                //Second (row)
-                    //Carousel
-                //Third (row)
-                    //Description
+            //First (row)
+            // App information
+            //Install form
+            //Second (row)
+            //Carousel
+            //Third (row)
+            //Description
         )
     }
 }
