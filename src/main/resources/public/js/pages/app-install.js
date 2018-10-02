@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import customFetch from "../util/custom-fetch";
+import ModalImage from "../modal-image";
 
 export default class AppInstall extends React.Component{
 
@@ -15,13 +16,12 @@ export default class AppInstall extends React.Component{
             serviceUrl: null,
             tos: ''
         },
-        config: {}
+        config: {},
     };
 
     componentDidMount(){
         const {app, config} = this.props.location.state;
         this.setState({app: app, config: config}, () => {
-            console.log(app);
             this.loadApp()
         });
 
@@ -38,12 +38,16 @@ export default class AppInstall extends React.Component{
         if(arrayScreenshots) {
             return arrayScreenshots.map((screenshot, index) => {
                 return (
-                    <div key={index}>
+                    <div key={index} onClick={() => this._openModal(screenshot)}>
                         <img className={"screenshot"} src={screenshot} alt={"screenshot" + index}/>
                     </div>
                 )
             })
         }
+    };
+
+    _openModal = (imageSrc) => {
+        this.refs.modalImage._openModal(imageSrc);
     };
 
 
@@ -72,17 +76,20 @@ export default class AppInstall extends React.Component{
                     </div>
                 </div>
 
-                <div className={"app-install-carousel"}>
-                    <div className={"carousel-container"}>
-                        <Slider {...settings}>
-                            {this._displayScreenShots(appDetails.screenshots)}
-                        </Slider>
+                {appDetails.screenshots.length > 0 &&
+                    <div className={"app-install-carousel"}>
+                        <div className={"carousel-container"}>
+                            <Slider {...settings}>
+                                {this._displayScreenShots(appDetails.screenshots)}
+                            </Slider>
+                        </div>
                     </div>
-                </div>
+                }
+
                 <div className={"flex-row app-install-description"}>
                     {app.description}
                 </div>
-
+            <ModalImage ref={"modalImage"}/>
             </div>
 
             // App Install Container

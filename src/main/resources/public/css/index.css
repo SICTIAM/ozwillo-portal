@@ -29,6 +29,7 @@
 @import 'components/search-apps-form.css';
 @import 'components/label-section.css';
 @import 'components/pill-button.css';
+@import 'components/modal-image.css';
 /* Pages */
 @import 'pages/dashboard.css';
 @import 'pages/notifications.css';
