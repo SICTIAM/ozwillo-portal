@@ -66,3 +66,25 @@
 }
 
 
+.install-app {
+    width: 25%;
+}
+
+.install-app .dropdown > *{
+    margin-bottom: 2em;
+}
+
+.install-app .dropdown > :last-child{
+    margin-top: -0.5em;
+}
+
+.install-area {
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+.install-area > :last-child{
+    margin-left: 0.5em;
+}
+

@@ -10,3 +10,7 @@ export const fetchRateApp = async (appType, appId, rate) => {
         json: {"rate": rate}
     });
 };
+
+export const fetchAvailableOrganizations = async (appType, appId) => {
+    return await customFetch(`/api/store/organizations/${appType}/${appId}`);
+};
