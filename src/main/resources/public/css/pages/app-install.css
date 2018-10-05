@@ -16,7 +16,7 @@
 
 .app-install-wrapper .header-app-install .information-app .information-app-details {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     flex-flow: column wrap;
     max-width: 50%;
     margin-left: 2em;
@@ -88,3 +88,20 @@
     margin-left: 0.5em;
 }
 
+.install .btn-install{
+    width: 8em;
+}
+
+.installed {
+    padding-top: 5em;
+    flex-flow: row wrap;
+}
+
+.installed > *{
+    margin-bottom: 0.5em;
+    margin-left: 0.5em;
+}
+
+.dashboard{
+    background-color: var(--primary-color) !important;
+}

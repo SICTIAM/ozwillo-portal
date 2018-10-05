@@ -17,7 +17,7 @@ class App extends React.PureComponent{
     render = () => {
         const {app} = this.props;
 
-        const indicatorStatus = app.installed ? "installed" : (app.paid ? "paid" : "free");
+        const indicatorStatus = app.paid ? "paid" : "free";
         const pubServiceIndicator = app.public_service ?
             <div className="public-service-indicator">
                 <div className="triangle"/>

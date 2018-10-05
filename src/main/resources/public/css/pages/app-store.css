@@ -8,7 +8,7 @@
     display: flex;
     flex-flow: wrap row;
     flex: 1;
-    padding: 1em 0 1em 0;
+    padding: 0em 0 1em 0;
     align-items: start;
     max-height: 80vh;
     overflow-y: auto;
@@ -32,12 +32,17 @@
 }
 
 .app-store-container .search-bar{
-    width: 50%;
+    width: 40%;
     position: absolute;
     z-index: 10;
-    border-radius: 50px;
+    /*border-radius: 50px;*/
+    margin-top: 0;
     box-shadow: 0.2em 0.2em 0.4em rgba(0, 0, 0, .3);
     transition: all 0.3s ease-in;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: 0;
+    border-color: var(--primary-color);
 }
 
 .app-store-container .search-bar.invisible{

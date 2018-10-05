@@ -141,7 +141,7 @@ public class StoreController {
     }
 
     @PostMapping("/buy/service/{serviceId}")
-    public Subscription buyApplication(@PathVariable String serviceId) {
+    public Subscription buyService(@PathVariable String serviceId) {
         return appstoreService.buyService(serviceId);
     }
 

@@ -1,11 +1,13 @@
 import React from "react";
 import Slider from "react-slick";
 import ModalImage from "../modal-image";
-import {fetchAppDetails, fetchAvailableOrganizations, fetchRateApp} from "../util/store-service";
+import {buyApplication, fetchAppDetails, fetchAvailableOrganizations, fetchRateApp} from "../util/store-service";
 import RatingWrapper from "../components/rating";
 import Select from 'react-select';
 import PropTypes from "prop-types";
 import customFetch from "../util/custom-fetch";
+import DropDownMenu from "../components/dropdown-menu";
+import {Link} from "react-router-dom";
 
 
 export default class AppInstall extends React.Component {
@@ -72,7 +74,7 @@ export default class AppInstall extends React.Component {
 
 
     render() {
-        const {app, appDetails, organizationsAvailable} = this.state;
+        const {app, appDetails, organizationsAvailable, config} = this.state;
         const settings = {
             dots: true,
             speed: 500,
@@ -98,7 +100,7 @@ export default class AppInstall extends React.Component {
                     </div>
                     <div className={"install-app"}>
                         <div className={"dropdown"}>
-                            <InstallForm app={app} organizationsAvailable={organizationsAvailable}/>
+                            <InstallForm app={app} organizationsAvailable={organizationsAvailable} config={config}/>
                         </div>
 
                     </div>
@@ -141,28 +143,11 @@ export class InstallForm extends React.Component {
 
     state = {
         installType: null,
-        errors: [],
+        error: {status: false, http_status: 200},
         organizationSelected: null,
         buying: false,
-        installed: false
+        installed: true
     };
-
-    // _getInstallType = () => {
-    //     const installTypeRestrictions = {personal: this.hasCitizens(), org: this.hasOrganizations()};
-    //     if (this.state.installType === 'PERSONAL' && installTypeRestrictions.personal === false) {
-    //         return 'ORG';
-    //     }
-    //     else if (this.state.installType === 'ORG' && installTypeRestrictions.org === false) {
-    //         return 'PERSONAL';
-    //     }
-    //     else {
-    //         return this.state.installType;
-    //     }
-    // };
-    //
-    // _isOnlyForCitizens = () => {
-    //     return this.props.app.target_citizens && !this.props.app.target_companies && !this.props.app.target_publicbodies;
-    // };
 
     _hasCitizens = () => {
         return this.props.app.target_citizens;
@@ -203,35 +188,28 @@ export class InstallForm extends React.Component {
         }
     };
 
-    _doInstallApp = () => {
+    _doInstallApp = async () => {
         const {app} = this.props;
         const {organizationSelected} = this.state;
         // set buying to true to display the spinner until any below ajax response is received.
-        this.setState({installed: false, buying: true});
-
-        let request = {appId: app.id, appType: app.type};
-        if (organizationSelected && organizationSelected.id) {
-            request.organizationId = organizationSelected.id;
-        }
-
-        customFetch('/api/store/buy', {
-            method: 'POST',
-            json: request
-        }).then((res) => {
+        this.setState({installed: false, buying: true, error: {status: false, http_status: 200}});
+        try {
+            await buyApplication(app.id, app.type, organizationSelected);
             this.setState({buying: false, installed: true});
-        }).catch((error) => {
+        } catch (error) {
             this.setState({buying: false, error: {status: true, http_status: error.status}})
-        })
+        }
     };
 
     render() {
         const options = this._createOptions();
-        const {installType, organizationSelected, buying, installed} = this.state;
+        const {installType, organizationSelected, buying, installed, error} = this.state;
         const {organizationsAvailable, app} = this.props;
         let disabledOrganization = !installType;
 
         return (
             <React.Fragment>
+                {!installed &&
                 <Select
                     className="select"
                     value={installType}
@@ -240,8 +218,9 @@ export class InstallForm extends React.Component {
                     onChange={(value) => this.setState({installType: value})}
                     clearable={false}
                     options={options}/>
+                }
 
-                {!(installType === 'PERSONAL') && !(app.type === "service") ?
+                {!installed && !(installType === 'PERSONAL') && !(app.type === "service") ?
                     <Select
                         disabled={disabledOrganization}
                         className={"select"}
@@ -254,23 +233,37 @@ export class InstallForm extends React.Component {
                     />
                     : null
                 }
+
                 <div className={"flex-row install-area"}>
                     {buying &&
                     <div className="container-loading text-center">
                         <i className="fa fa-spinner fa-spin loading"/>
                     </div>
                     }
+
                     {installed ?
-                        <div className="next">
-                            <button className="btn btn-default pull-right" disabled>{this.context.t('installed')}</button>
+                        <div className="install installed">
+                            <Link className="btn btn-default-inverse pull-right btn-install"
+                                  to={`/${this.props.config.language}/store`}>
+                                {this.context.t('market')}
+                            </Link>
+                            <Link className="btn btn-default-inverse pull-right btn-install dashboard"
+                                  to={"/my/dashboard"}>
+                                {this.context.t('dashboard')}
+                            </Link>
                         </div>
                         :
-                        <div className="next">
-                            <button className="btn btn-default pull-right" disabled={this._installButtonIsDisabled()}
+                        <div className="install">
+                            <button className="btn pull-right btn-install" disabled={this._installButtonIsDisabled()}
                                     onClick={this._doInstallApp}>{this.context.t('install')}</button>
                         </div>
                     }
                 </div>
+                {error.http_status !== 200 &&
+                <div className={"alert alert-danger"}>
+                    <p>{this.context.t('could-not-install-app')}</p>
+                </div>
+                }
             </React.Fragment>
         )
     }
@@ -284,5 +277,7 @@ InstallForm.contextTypes = {
 
 InstallForm.propTypes = {
     app: PropTypes.object.isRequired,
-    organizationsAvailable: PropTypes.object.isRequired
+    organizationsAvailable: PropTypes.array.isRequired
 };
+
+
