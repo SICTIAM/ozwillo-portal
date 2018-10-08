@@ -1,6 +1,7 @@
 package org.oasis_eu.portal.services;
 
 import org.oasis_eu.portal.model.authority.UIOrganization;
+import org.oasis_eu.portal.model.dc.DCOrganization;
 import org.oasis_eu.portal.services.kernel.CatalogStoreImpl;
 import org.oasis_eu.portal.services.kernel.SubscriptionStoreImpl;
 import org.oasis_eu.portal.model.kernel.ApplicationInstantiationRequest;
@@ -19,6 +20,7 @@ import org.oasis_eu.portal.model.store.AppstoreHit;
 import org.oasis_eu.portal.model.store.InstallationOption;
 import org.oasis_eu.portal.services.dc.GeographicalAreaService;
 import org.oasis_eu.spring.kernel.model.Organization;
+import org.oasis_eu.spring.kernel.model.OrganizationStatus;
 import org.oasis_eu.spring.kernel.service.OrganizationStore;
 import org.oasis_eu.spring.kernel.service.UserInfoService;
 import org.slf4j.Logger;
@@ -88,7 +90,7 @@ public class AppstoreService {
      * @return
      */
     public List<AppstoreHit> getAll(List<Audience> targetAudiences, List<PaymentOption> paymentOptions,
-                                    List<Locale> supportedLocales, List<String> geographicalAreas,
+                                    List<Locale> supportedLocales, String organizationId, List<String> geographicalAreas,
                                     List<String> categoryIds, String q, int from) {
 
         if (addCurrentToSupportedLocalesIfNone) {
@@ -99,7 +101,15 @@ public class AppstoreService {
 
         String currentHl = RequestContextUtils.getLocale(request).getLanguage(); // optimization
         List<CatalogEntry> catalogEntryLst = catalogStore.findAllVisible(targetAudiences, paymentOptions, supportedLocales,
-            geographicalAreas, categoryIds, q, currentHl, from);
+                geographicalAreas, categoryIds, q, currentHl, from);
+
+        if(organizationId != null && !organizationId.equals("")) {
+            UIOrganization organization = organizationService.getOrganizationFromKernel(organizationId);
+
+            catalogEntryLst = catalogEntryLst.stream()
+                    .filter(app -> app.getTargetAudience().stream().anyMatch(audience -> audience.isCompatibleWith(organization.getType())))
+                    .collect(Collectors.toList());
+        }
 
         return catalogEntryLst.stream().filter(catalogEntry -> catalogEntry != null)
             .map(catalogEntry -> new AppstoreHit(RequestContextUtils.getLocale(request), catalogEntry,

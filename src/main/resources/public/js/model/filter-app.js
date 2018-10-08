@@ -9,6 +9,7 @@ export default class FilterApp {
         free: false
     };
     selectedLanguage = '';
+    selectedOrganizationId = '';
     geoAreaAncestorsUris =  [];
     searchText = '';
 

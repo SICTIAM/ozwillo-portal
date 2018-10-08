@@ -146,7 +146,7 @@ export class InstallForm extends React.Component {
         error: {status: false, http_status: 200},
         organizationSelected: null,
         buying: false,
-        installed: true
+        installed: false
     };
 
     _hasCitizens = () => {

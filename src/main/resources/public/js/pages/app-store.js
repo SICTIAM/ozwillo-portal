@@ -69,6 +69,7 @@ export default class AppStore extends React.Component {
             free: filters.payment.free,
             paid: filters.payment.paid,
             supported_locales: supported_locales,
+            organizationId: filters.selectedOrganizationId,
             geoArea_AncestorsUris: filters.geoAreaAncestorsUris,
             category_ids: [],
             q: filters.searchText

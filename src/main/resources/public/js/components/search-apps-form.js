@@ -10,7 +10,9 @@ export default class SearchAppsForm extends React.Component {
     state = {
         languages: [],
         selectedLanguage: '',
+        selectedOrganizationId: '',
         geoArea: '',
+        organizations: '',
         payment: {
             free: false,
             paid: false
@@ -26,7 +28,6 @@ export default class SearchAppsForm extends React.Component {
 
     componentDidMount() {
         this.initialize();
-
     }
 
     initialize = () => {
@@ -35,6 +36,10 @@ export default class SearchAppsForm extends React.Component {
         languages.unshift('all');
         this.setState({languages: languages, selectedLanguage: config.language});
         this.props.updateFilter(null, "selectedLanguage", config.language);
+        customFetch("/my/api/organization").then((organizations) => {
+            organizations.unshift({name:this.context.t(`store.language.all`), id: ''});
+            this.setState({organizations: organizations});
+        });
 
     };
 
@@ -54,6 +59,13 @@ export default class SearchAppsForm extends React.Component {
             this.props.updateFilter(null, "geoAreaAncestorsUris", '');
         }
     };
+
+    _handleOrganizationChange = (event) => {
+        const selectedOrganizationId = event.target.value;
+        this.setState({selectedOrganizationId: selectedOrganizationId});
+        this.props.updateFilter(null, "selectedOrganizationId", selectedOrganizationId);
+    };
+
     _handleOnPaymentChange = (event) => {
         const inputModified = event.target.name;
         let {payment} = this.state;
@@ -72,10 +84,13 @@ export default class SearchAppsForm extends React.Component {
     };
 
     render() {
-        const {languages, selectedLanguage, payment, audience} = this.state;
+        const {languages, selectedLanguage, payment, audience, selectedOrganizationId, organizations} = this.state;
         const languageComponents = languages.map(language =>
             <option key={language} value={language}>{this.context.t(`store.language.${language}`)}</option>
         );
+        const organizationComponents = organizations ? organizations.map(organization =>
+            <option key={organization.id} value={organization.id}>{organization.name}</option>
+        ) : null;
 
         return (
             <div id="search-apps-form">
@@ -96,6 +111,14 @@ export default class SearchAppsForm extends React.Component {
                                         onGeoAreaSelected={this._handleGeoSelected}
                                         value={this.state.geoArea}
                     />
+                </LabelSection>
+                {/*ORGANIZATION*/}
+                <LabelSection label={this.context.t('organization.search.title')}>
+                    <select id="organization" className="form-control"
+                            onChange={this._handleOrganizationChange}
+                            value={selectedOrganizationId}>
+                        {organizationComponents}
+                    </select>
                 </LabelSection>
                 {/*MODE*/}
                 <LabelSection label={this.context.t('mode')}>
