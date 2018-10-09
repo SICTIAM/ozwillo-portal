@@ -28,16 +28,8 @@ export default class SearchAppsForm extends React.Component {
 
     };
 
-    componentDidMount() {
-        this.initialize();
-    }
-
-    initialize = async () => {
-        const {config} = this.props;
-        let languages = Object.assign([], config.languages);
-        languages.unshift('all');
-        this.setState({languages: languages, selectedLanguage: config.language});
-        this.props.updateFilter(null, "selectedLanguage", config.language);
+    componentDidMount = async () =>  {
+        await this.initializeLanguage();
 
         //organization input is just available when user is connected
         const userInfo = await fetchUserInfos();
@@ -47,8 +39,32 @@ export default class SearchAppsForm extends React.Component {
                 this.setState({organizations: organizations});
             });
         }
+    }
 
+    initializeLanguage = async () => {
+        const {config} = this.props;
+        let languages = Object.assign([], config.languages);
+        languages.unshift('all');
+        this.setState({languages: languages, selectedLanguage: config.language});
+        this.props.updateFilter(null, "selectedLanguage", config.language);
+    };
 
+    resetFilters = () => {
+        this.setState({
+            selectedLanguage: '',
+            selectedOrganizationId: '',
+            geoArea: '',
+            payment: {
+                free: false,
+                paid: false
+            },
+            audience: {
+                publicbodies: false,
+                citizens: false,
+                companies: false
+
+            }});
+        this.initializeLanguage();
     };
 
     _handleLanguageClicked = (event) => {

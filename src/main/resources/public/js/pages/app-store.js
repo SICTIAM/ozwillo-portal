@@ -90,6 +90,13 @@ export default class AppStore extends React.Component {
         this.setState({activeFiltersNumber: counter});
     };
 
+    _resetFilters = () => {
+      this.setState({filters: new FilterApp()}, () => {
+          this.refs['searchAppForm'].resetFilters();
+          this.initialize();
+      });
+    };
+
     _getApps = () => {
         const filters = this._transformSearchFilters();
         this._countActiveFilters(filters);
@@ -119,11 +126,11 @@ export default class AppStore extends React.Component {
         const newScrollValue = e.target.scrollTop;
         const {scrollValue} = this.state;
         let diff = Math.abs(newScrollValue - scrollValue);
-        if(diff > 5) {
+        if (diff > 5) {
             if (newScrollValue > scrollValue) {
                 this.setState({isSearchBarVisible: "invisible", scrollValue: newScrollValue});
             } else {
-                this.setState({isSearchBarVisible: "visible",  scrollValue: newScrollValue});
+                this.setState({isSearchBarVisible: "visible", scrollValue: newScrollValue});
             }
         }
     };
@@ -131,9 +138,18 @@ export default class AppStore extends React.Component {
     render() {
         const {loading, activeFiltersNumber, config} = this.state;
         const filterCounter = activeFiltersNumber > 0 &&
-            <div className={"badge-filter"}>
-                <CustomTooltip title={this.context.t("active-filter")}>{activeFiltersNumber}</CustomTooltip></div>;
-
+            <div className={"badge-filter-close"}>
+                <CustomTooltip title={this.context.t("active-filter")}>{activeFiltersNumber}</CustomTooltip>
+            </div>;
+        const filterCounterHeader = activeFiltersNumber > 0 &&
+            <div className={"reset-filters"}>
+                <i className={"fa fa-trash"} onClick={this._resetFilters}/>
+                <div className={"badge-filter-open"}>
+                    <CustomTooltip title={this.context.t("active-filter")}>
+                        {activeFiltersNumber}
+                    </CustomTooltip>
+                </div>
+            </div>;
 
 
         return (
@@ -145,8 +161,8 @@ export default class AppStore extends React.Component {
                 </div>
                 :
                 <div className={"app-store-wrapper"}>
-                    <SideNav isOpenChildren={filterCounter}>
-                        <SearchAppForm updateFilter={this.updateFilters} config={config}/>
+                    <SideNav isCloseChildren={filterCounter} isOpenHeader={filterCounterHeader}>
+                        <SearchAppForm ref={"searchAppForm"} updateFilter={this.updateFilters} config={config}/>
                     </SideNav>
                     <div className={"app-store-container"} id="store-apps" onScroll={this._handleScroll}>
 

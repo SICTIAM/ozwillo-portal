@@ -16,15 +16,6 @@
     padding-top: 10%;
 }
 
-.side-nav .fa-chevron-left{
-    justify-self: flex-start;
-    align-self: flex-end;
-    padding: 5% 5% 0 0;
-    font-size: 1.5em;
-    color: var(--primary-color);
-    cursor: pointer;
-}
-
 .side-nav-tongue{
     position: relative;
     font-size: 1.25em;
@@ -46,17 +37,24 @@
     font-size: 1.25em;
 }
 
-
-.badge-filter{
-    background-color: var(--alert-color);
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--tertiary-color);
-    position: relative;
-    bottom: -0.3em;
-    left: -1em;
+.side-nav-header .fa-chevron-left{
+    padding: 0 5% 0 0;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    cursor: pointer;
 }
+
+.side-nav-header{
+    display: flex;
+    flex-flow: row wrap;
+    min-height: 8vh;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.open-header-children{
+    padding: 0 0 0 5%;
+}
+

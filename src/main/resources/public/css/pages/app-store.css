@@ -54,3 +54,42 @@
 .app-store-wrapper::-webkit-scrollbar-thumb{
     background: red;
 }
+
+.reset-filters{
+    flex-direction: row;
+    display: flex;
+}
+
+.reset-filters > i {
+    font-size: 1.5em;
+    cursor: pointer;
+    color:var(--secondary-color)
+}
+
+.badge-filter-open{
+    background-color: var(--alert-color);
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    color: var(--tertiary-color);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: relative;
+    top: -0.8em;
+    right: 0.5em;
+}
+
+.badge-filter-close{
+    background-color: var(--alert-color);
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--tertiary-color);
+    position: relative;
+    bottom: -0.3em;
+    left: -1em;
+}
