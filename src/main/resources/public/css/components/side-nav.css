@@ -8,6 +8,7 @@
     overflow-x: hidden;
     transition: 0.5s;
     flex-direction: column;
+    max-height: 80vh;
 }
 
 

@@ -6,8 +6,8 @@ import RatingWrapper from "../components/rating";
 import Select from 'react-select';
 import PropTypes from "prop-types";
 import customFetch from "../util/custom-fetch";
-import DropDownMenu from "../components/dropdown-menu";
 import {Link} from "react-router-dom";
+import {fetchOrganizationComplete} from "../util/organization-service";
 
 
 export default class AppInstall extends React.Component {
@@ -39,8 +39,25 @@ export default class AppInstall extends React.Component {
         const {app} = this.state;
         const data = await fetchAvailableOrganizations(app.type, app.id);
         this.setState({organizationsAvailable: data});
+
+        const newOrganizationsAvailable = await this._disableOrganizationWhereAppAlreadyInstalled(data);
+        this.setState({organizationsAvailable: newOrganizationsAvailable});
     };
 
+    _disableOrganizationWhereAppAlreadyInstalled = async (organizations) => {
+        const {app} = this.state;
+        for(let organization of organizations){
+            let orgComplete = await fetchOrganizationComplete(organization.id);
+            orgComplete.instances.map(instance => {
+                if (app.type === "application" && instance.applicationInstance.application_id === app.id) {
+                    organization.disabled = true;
+                } else if (app.type === "service" && instance.applicationInstance.provider_id === app.id) {
+                    organization.disabled = true;
+                }
+            });
+        }
+        return organizations;
+    };
 
     _loadAppDetails = async () => {
         const {app} = this.state;
@@ -125,15 +142,6 @@ export default class AppInstall extends React.Component {
                     ref={"modalImage"}
                 />
             </div>
-
-            // App Install Container
-            //First (row)
-            // App information
-            //Install form
-            //Second (row)
-            //Carousel
-            //Third (row)
-            //Description
         )
     }
 }

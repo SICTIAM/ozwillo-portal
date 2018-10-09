@@ -12,7 +12,7 @@ export default class SearchAppsForm extends React.Component {
         selectedLanguage: '',
         selectedOrganizationId: '',
         geoArea: '',
-        organizations: '',
+        organizations: null,
         payment: {
             free: false,
             paid: false
@@ -36,6 +36,7 @@ export default class SearchAppsForm extends React.Component {
         languages.unshift('all');
         this.setState({languages: languages, selectedLanguage: config.language});
         this.props.updateFilter(null, "selectedLanguage", config.language);
+
         customFetch("/my/api/organization").then((organizations) => {
             organizations.unshift({name:this.context.t(`store.language.all`), id: ''});
             this.setState({organizations: organizations});
@@ -113,13 +114,15 @@ export default class SearchAppsForm extends React.Component {
                     />
                 </LabelSection>
                 {/*ORGANIZATION*/}
-                <LabelSection label={this.context.t('organization.search.title')}>
-                    <select id="organization" className="form-control"
-                            onChange={this._handleOrganizationChange}
-                            value={selectedOrganizationId}>
-                        {organizationComponents}
-                    </select>
-                </LabelSection>
+                {organizations &&
+                    <LabelSection label={this.context.t('organization.search.title')}>
+                        <select id="organization" className="form-control"
+                                onChange={this._handleOrganizationChange}
+                                value={selectedOrganizationId}>
+                            {organizationComponents}
+                        </select>
+                    </LabelSection>
+                }
                 {/*MODE*/}
                 <LabelSection label={this.context.t('mode')}>
                     <PillButton label={this.context.t('free')} id={"free-checkbox"}
