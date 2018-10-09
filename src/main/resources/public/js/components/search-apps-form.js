@@ -29,6 +29,7 @@ export default class SearchAppsForm extends React.Component {
     };
 
     componentDidMount = async () =>  {
+        this._initializeFilters(this.props.filters);
         await this.initializeLanguage();
 
         //organization input is just available when user is connected
@@ -39,14 +40,48 @@ export default class SearchAppsForm extends React.Component {
                 this.setState({organizations: organizations});
             });
         }
+    };
+
+    componentWillReceiveProps(nextProps){
+        const {filters} =  nextProps;
+
+        if(filters){
+            this._initializeFilters(filters);
+        }
+    }
+
+    _initializeFilters = (filters) => {
+        let {audience, payment, geoArea,selectedOrganizationId, selectedLanguage} = this.state;
+
+            for(let key in audience){
+                audience[key] = filters.audience[key];
+            }
+            for(let key in payment){
+                payment[key] = filters.payment[key];
+            }
+            selectedOrganizationId = filters.selectedOrganizationId;
+            geoArea = filters.geoArea;
+            selectedLanguage = filters.selectedLanguage;
+
+            this.setState({
+                audience,
+                payment,
+                selectedOrganizationId,
+                geoArea,
+                selectedLanguage
+            });
     }
 
     initializeLanguage = async () => {
         const {config} = this.props;
         let languages = Object.assign([], config.languages);
         languages.unshift('all');
-        this.setState({languages: languages, selectedLanguage: config.language});
-        this.props.updateFilter(null, "selectedLanguage", config.language);
+        if(this.props.filters.selectedLanguage === '') {
+            this.setState({languages: languages, selectedLanguage: config.language});
+            this.props.updateFilter(null, "selectedLanguage", config.language);
+        }else{
+            this.setState({languages: languages});
+        }
     };
 
     resetFilters = () => {
@@ -74,13 +109,15 @@ export default class SearchAppsForm extends React.Component {
     };
 
     _handleGeoSelected = (event, value) => {
-        this.props.updateFilter(null, "geoAreaAncestorsUris", value.ancestors);
+        this.props.updateFilter(null, "geoArea", value);
     };
 
     _handleGeoChange = (event, value) => {
-        this.setState({geoArea: value});
+        let {geoArea} = this.state;
+        geoArea.name = value;
+        this.setState({geoArea});
         if(value===''){
-            this.props.updateFilter(null, "geoAreaAncestorsUris", '');
+            this.props.updateFilter(null, "geoArea", '');
         }
     };
 
@@ -133,7 +170,7 @@ export default class SearchAppsForm extends React.Component {
                                         endpoint="areas"
                                         onChange={this._handleGeoChange}
                                         onGeoAreaSelected={this._handleGeoSelected}
-                                        value={this.state.geoArea}
+                                        value={this.state.geoArea.name}
                     />
                 </LabelSection>
                 {/*ORGANIZATION*/}

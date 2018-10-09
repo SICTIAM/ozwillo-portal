@@ -7,12 +7,8 @@ export default class SideNav extends React.Component {
 
 
     state = {
-        isOpen: false,
+        isOpen: true,
     };
-
-    componentDidMount() {
-    }
-
 
     _switchOpenState = () => {
         return this.setState({isOpen: !this.state.isOpen})

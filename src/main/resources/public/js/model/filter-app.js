@@ -10,7 +10,10 @@ export default class FilterApp {
     };
     selectedLanguage = '';
     selectedOrganizationId = '';
-    geoAreaAncestorsUris =  [];
+    geoArea =  {
+        name:'',
+        ancestors: []
+    };
     searchText = '';
 
 }

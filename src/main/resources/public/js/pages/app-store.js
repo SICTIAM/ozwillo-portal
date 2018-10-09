@@ -28,9 +28,19 @@ export default class AppStore extends React.Component {
     }
 
     initialize = () => {
-        this._fetchConfig().then(() => {
-            this._getApps();
-        });
+        const potentialOldFilters = this._getFiltersFromLocalStorage();
+        if(potentialOldFilters){
+            this.setState({filters: potentialOldFilters}, () => {
+                this._fetchConfig().then(() => {
+                    this._getApps();
+                });
+            });
+        }else{
+            this._fetchConfig().then(() => {
+                this._getApps();
+            });
+        }
+
 
     };
 
@@ -51,6 +61,7 @@ export default class AppStore extends React.Component {
             filters[key] = value;
         }
         this.setState({filters: filters});
+        this._setFiltersInLocalStorage(filters);
         this._getApps();
     };
 
@@ -72,10 +83,18 @@ export default class AppStore extends React.Component {
             paid: filters.payment.paid,
             supported_locales: supported_locales,
             organizationId: filters.selectedOrganizationId,
-            geoArea_AncestorsUris: filters.geoAreaAncestorsUris,
+            geoArea_AncestorsUris: filters.geoArea.ancestors,
             category_ids: [],
             q: filters.searchText
         };
+    };
+
+    _setFiltersInLocalStorage = (filters) => {
+        localStorage.setItem('filters', JSON.stringify(filters));
+    };
+
+    _getFiltersFromLocalStorage = ()=> {
+        return JSON.parse(localStorage.getItem('filters'));
     };
 
     _countActiveFilters = (filters) => {
@@ -91,7 +110,9 @@ export default class AppStore extends React.Component {
     };
 
     _resetFilters = () => {
-      this.setState({filters: new FilterApp()}, () => {
+        const cleanFilters = new FilterApp();
+      this.setState({filters: cleanFilters}, () => {
+          this._setFiltersInLocalStorage(cleanFilters);
           this.refs['searchAppForm'].resetFilters();
           this.initialize();
       });
@@ -136,7 +157,7 @@ export default class AppStore extends React.Component {
     };
 
     render() {
-        const {loading, activeFiltersNumber, config} = this.state;
+        const {loading, activeFiltersNumber, config, filters} = this.state;
         const filterCounter = activeFiltersNumber > 0 &&
             <div className={"badge-filter-close"}>
                 <CustomTooltip title={this.context.t("active-filter")}>{activeFiltersNumber}</CustomTooltip>
@@ -162,7 +183,7 @@ export default class AppStore extends React.Component {
                 :
                 <div className={"app-store-wrapper"}>
                     <SideNav isCloseChildren={filterCounter} isOpenHeader={filterCounterHeader}>
-                        <SearchAppForm ref={"searchAppForm"} updateFilter={this.updateFilters} config={config}/>
+                        <SearchAppForm ref={"searchAppForm"} updateFilter={this.updateFilters} config={config} filters={filters}/>
                     </SideNav>
                     <div className={"app-store-container"} id="store-apps" onScroll={this._handleScroll}>
 
