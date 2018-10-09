@@ -4,6 +4,8 @@ import customFetch from "../util/custom-fetch";
 import FilterApp from "../model/filter-app";
 import SideNav from "../components/side-nav";
 import SearchAppForm from "../components/search-apps-form";
+import CustomTooltip from "../components/custom-tooltip";
+import PropTypes from "prop-types";
 
 export default class AppStore extends React.Component {
 
@@ -129,7 +131,8 @@ export default class AppStore extends React.Component {
     render() {
         const {loading, activeFiltersNumber, config} = this.state;
         const filterCounter = activeFiltersNumber > 0 &&
-            <div className={"badge-filter"}>{activeFiltersNumber}</div>;
+            <div className={"badge-filter"}>
+                <CustomTooltip title={this.context.t("active-filter")}>{activeFiltersNumber}</CustomTooltip></div>;
 
 
 
@@ -159,3 +162,7 @@ export default class AppStore extends React.Component {
         )
     }
 }
+
+AppStore.contextTypes = {
+    t: PropTypes.func.isRequired
+};

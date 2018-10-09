@@ -4,6 +4,8 @@ import customFetch from "../util/custom-fetch";
 import GeoAreaAutosuggest from "./autosuggests/geoarea-autosuggest";
 import LabelSection from "./label-section";
 import PillButton from "./pill-button";
+import {fetchUserInfoAction} from "../actions/user";
+import {fetchUserInfos} from "../util/user-service";
 
 export default class SearchAppsForm extends React.Component {
 
@@ -30,17 +32,22 @@ export default class SearchAppsForm extends React.Component {
         this.initialize();
     }
 
-    initialize = () => {
+    initialize = async () => {
         const {config} = this.props;
         let languages = Object.assign([], config.languages);
         languages.unshift('all');
         this.setState({languages: languages, selectedLanguage: config.language});
         this.props.updateFilter(null, "selectedLanguage", config.language);
 
-        customFetch("/my/api/organization").then((organizations) => {
-            organizations.unshift({name:this.context.t(`store.language.all`), id: ''});
-            this.setState({organizations: organizations});
-        });
+        //organization input is just available when user is connected
+        const userInfo = await fetchUserInfos();
+        if(userInfo){
+            customFetch("/my/api/organization").then((organizations) => {
+                organizations.unshift({name:this.context.t(`store.language.all`), id: ''});
+                this.setState({organizations: organizations});
+            });
+        }
+
 
     };
 
