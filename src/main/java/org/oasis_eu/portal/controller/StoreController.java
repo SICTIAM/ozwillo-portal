@@ -180,7 +180,9 @@ public class StoreController {
         application.paid = hit.getCatalogEntry().getPaymentOption().equals(PaymentOption.PAID);
         application.providerName = hit.getProviderName();
         String providerId = hit.getCatalogEntry().getProviderId();
-        application.installed = hit.getInstallationOption().equals(InstallationOption.INSTALLED);
+        if(hit.getInstallationOption() != null){
+            application.installed = hit.getInstallationOption().equals(InstallationOption.INSTALLED);
+        }
 
         // let's be paranoid about nulls here
         if (providerId != null) {

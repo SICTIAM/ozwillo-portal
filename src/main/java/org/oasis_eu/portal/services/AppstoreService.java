@@ -103,18 +103,27 @@ public class AppstoreService {
         List<CatalogEntry> catalogEntryLst = catalogStore.findAllVisible(targetAudiences, paymentOptions, supportedLocales,
                 geographicalAreas, categoryIds, q, currentHl, from);
 
+        //if an organization is selected, display the specifics app with the install option
         if(organizationId != null && !organizationId.equals("")) {
             UIOrganization organization = organizationService.getOrganizationFromKernel(organizationId);
 
             catalogEntryLst = catalogEntryLst.stream()
                     .filter(app -> app.getTargetAudience().stream().anyMatch(audience -> audience.isCompatibleWith(organization.getType())))
                     .collect(Collectors.toList());
+
+
+            //return all the applications available for a specific organization with the install option
+            return catalogEntryLst.stream().filter(Objects::nonNull)
+                    .map(catalogEntry -> new AppstoreHit(RequestContextUtils.getLocale(request), catalogEntry,
+                            imageService.getImageForURL(catalogEntry.getIcon(RequestContextUtils.getLocale(request)), ImageFormat.PNG_64BY64, false),
+                            getOrganizationName(catalogEntry), getApplicationInstallationOptionFromOrganization(organization, catalogEntry)))
+                    .collect(Collectors.toList());
         }
 
-        return catalogEntryLst.stream().filter(catalogEntry -> catalogEntry != null)
+        return catalogEntryLst.stream().filter(Objects::nonNull)
             .map(catalogEntry -> new AppstoreHit(RequestContextUtils.getLocale(request), catalogEntry,
                 imageService.getImageForURL(catalogEntry.getIcon(RequestContextUtils.getLocale(request)), ImageFormat.PNG_64BY64, false),
-                getOrganizationName(catalogEntry), getInstallationOption(catalogEntry)))
+                getOrganizationName(catalogEntry)))
             .collect(Collectors.toList());
     }
 
@@ -207,6 +216,20 @@ public class AppstoreService {
         installedStatusRepository.save(status);
 
         return option;
+    }
+
+    private InstallationOption getApplicationInstallationOptionFromOrganization(UIOrganization organization, CatalogEntry entry){
+        boolean installed = organization.getInstances().stream()
+                .map(MyAppsInstance::getApplicationInstance)
+                .anyMatch(instance ->
+                   entry.getId() != null && entry.getType().equals(CatalogEntryType.APPLICATION) && entry.getId().equals(instance.getApplicationId())
+                           || entry.getProviderId() != null && entry.getType().equals(CatalogEntryType.SERVICE) && entry.getProviderId().equals(instance.getProviderId())
+                );
+        if(installed){
+            return InstallationOption.INSTALLED;
+        }else{
+            return InstallationOption.valueOf(entry.getPaymentOption().toString());
+        }
     }
 
     private InstallationOption computeInstallationOption(CatalogEntry entry) {
