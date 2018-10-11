@@ -8,7 +8,7 @@ export default class FilterApp {
         paid: false,
         free: false
     };
-    selectedLanguage = '';
+    selectedLanguage = 'all';
     selectedOrganizationId = '';
     geoArea =  {
         name:'',

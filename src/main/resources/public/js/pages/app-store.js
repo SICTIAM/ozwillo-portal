@@ -7,6 +7,8 @@ import SearchAppForm from "../components/search-apps-form";
 import CustomTooltip from "../components/custom-tooltip";
 import PropTypes from "prop-types";
 
+import swal from "sweetalert2";
+
 export default class AppStore extends React.Component {
 
     constructor() {
@@ -24,24 +26,49 @@ export default class AppStore extends React.Component {
     };
 
     componentDidMount() {
-        this.initialize();
+        this._askForFilters();
     }
 
-    initialize = () => {
-        const potentialOldFilters = this._getFiltersFromLocalStorage();
-        if(potentialOldFilters){
-            this.setState({filters: potentialOldFilters}, () => {
-                this._fetchConfig().then(() => {
-                    this._getApps();
-                });
-            });
-        }else{
-            this._fetchConfig().then(() => {
-                this._getApps();
-            });
+    componentWillUnmount() {
+        if (location.href.match("store")) {
+            localStorage.setItem("askFilterPermission", 'false')
+        } else {
+            localStorage.setItem("askFilterPermission", 'true')
         }
+    }
 
+    _askForFilters = () => {
+        const potentialOldFilters = this._getFiltersFromLocalStorage();
+        const askFilterPermission = JSON.parse(localStorage.getItem("askFilterPermission"));
 
+        this.initialize();
+
+        if (potentialOldFilters && !askFilterPermission) {
+            this.setState({filters: potentialOldFilters}, () => {
+                this._setFiltersInLocalStorage(potentialOldFilters);
+            });
+        } else if (potentialOldFilters && askFilterPermission) {
+            swal({
+                title: this.context.t("apply-old-filters"),
+                type: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: this.context.t("ui.cancel"),
+                confirmButtonText: this.context.t("ui.yes")
+            }).then((result) => {
+                if (result.value) {
+                    this.setState({filters: potentialOldFilters}, () => {
+                        this._setFiltersInLocalStorage(potentialOldFilters);
+                    });
+                }
+            })
+        }
+    };
+
+    initialize = async () => {
+        await this._fetchConfig();
+        await this._getApps();
     };
 
     _fetchConfig = async () => {
@@ -93,7 +120,7 @@ export default class AppStore extends React.Component {
         localStorage.setItem('filters', JSON.stringify(filters));
     };
 
-    _getFiltersFromLocalStorage = ()=> {
+    _getFiltersFromLocalStorage = () => {
         return JSON.parse(localStorage.getItem('filters'));
     };
 
@@ -111,28 +138,27 @@ export default class AppStore extends React.Component {
 
     _resetFilters = () => {
         const cleanFilters = new FilterApp();
-      this.setState({filters: cleanFilters}, () => {
-          this._setFiltersInLocalStorage(cleanFilters);
-          this.refs['searchAppForm'].resetFilters();
-          this.initialize();
-      });
+        this.setState({filters: cleanFilters}, () => {
+            this._setFiltersInLocalStorage(cleanFilters);
+            this.refs['searchAppForm'].resetFilters();
+            this.initialize();
+        });
     };
 
-    _getApps = () => {
+    _getApps = async () => {
         const filters = this._transformSearchFilters();
         this._countActiveFilters(filters);
-        customFetch(`/api/store/applications`, {urlParams: filters})
-            .then((res) => {
-                this.setState({
-                    apps: res.apps,
-                    maybeMoreApps: res.maybeMoreApps,
-                    loading: false
-                });
-            })
-            .catch((err) => {
-                this.setState({apps: [], loading: false});
-                console.error(err.toString());
+        try {
+            const res = await customFetch(`/api/store/applications`, {urlParams: filters});
+            this.setState({
+                apps: res.apps,
+                maybeMoreApps: res.maybeMoreApps,
+                loading: false
             });
+        } catch (err) {
+            this.setState({apps: [], loading: false});
+            console.error(err.toString());
+        }
     };
 
     _displayApps = () => {
@@ -157,6 +183,7 @@ export default class AppStore extends React.Component {
     };
 
     render() {
+        this.cancel = this.context.t("ui.cancel");
         const {loading, activeFiltersNumber, config, filters} = this.state;
         const filterCounter = activeFiltersNumber > 0 &&
             <div className={"badge-filter-close"}>
@@ -174,28 +201,32 @@ export default class AppStore extends React.Component {
 
 
         return (
-            loading ?
-                <div className={"app-store-wrapper"}>
-                    <div className="app-store-container-loading text-center">
-                        <i className="fa fa-spinner fa-spin loading"/>
-                    </div>
-                </div>
-                :
-                <div className={"app-store-wrapper"}>
-                    <SideNav isCloseChildren={filterCounter} isOpenHeader={filterCounterHeader}>
-                        <SearchAppForm ref={"searchAppForm"} updateFilter={this.updateFilters} config={config} filters={filters}/>
-                    </SideNav>
-                    <div className={"app-store-container"} id="store-apps" onScroll={this._handleScroll}>
-
-                        <input type="text" id="fulltext"
-                               className={"form-control search-bar " + this.state.isSearchBarVisible}
-                               onChange={this._handleFullTextSearchChanged}
-                               placeholder={"keywords"} name="fullTextSearch"/>
-                        <div className={"app-list"}>
-                            {this._displayApps()}
+            <React.Fragment>
+                {loading ?
+                    <div className={"app-store-wrapper"}>
+                        <div className="app-store-container-loading text-center">
+                            <i className="fa fa-spinner fa-spin loading"/>
                         </div>
                     </div>
-                </div>
+                    :
+                    <div className={"app-store-wrapper"}>
+                        <SideNav isCloseChildren={filterCounter} isOpenHeader={filterCounterHeader}>
+                            <SearchAppForm ref={"searchAppForm"} updateFilter={this.updateFilters} config={config}
+                                           filters={filters}/>
+                        </SideNav>
+                        <div className={"app-store-container"} id="store-apps" onScroll={this._handleScroll}>
+
+                            <input type="text" id="fulltext"
+                                   className={"form-control search-bar " + this.state.isSearchBarVisible}
+                                   onChange={this._handleFullTextSearchChanged}
+                                   placeholder={"keywords"} name="fullTextSearch"/>
+                            <div className={"app-list"}>
+                                {this._displayApps()}
+                            </div>
+                        </div>
+                    </div>
+                }
+            </React.Fragment>
         )
     }
 }

@@ -1,11 +1,10 @@
 import React from "react";
 import Slider from "react-slick";
-import ModalImage from "../modal-image";
+import ModalImage from "../components/modal-image";
 import {buyApplication, fetchAppDetails, fetchAvailableOrganizations, fetchRateApp} from "../util/store-service";
 import RatingWrapper from "../components/rating";
 import Select from 'react-select';
 import PropTypes from "prop-types";
-import customFetch from "../util/custom-fetch";
 import {Link} from "react-router-dom";
 import {fetchOrganizationComplete} from "../util/organization-service";
 
@@ -156,14 +155,6 @@ export class InstallForm extends React.Component {
         buying: false,
         installed: false
     };
-
-    componentDidMount(){
-        window.onpopstate = () => {
-            if(location.href.match('store')){
-                console.log(location.href)
-            }
-        }
-    }
 
     _hasCitizens = () => {
         return this.props.app.target_citizens;

@@ -70,7 +70,7 @@ export default class SearchAppsForm extends React.Component {
                 geoArea,
                 selectedLanguage
             });
-    }
+    };
 
     initializeLanguage = async () => {
         const {config} = this.props;
@@ -99,7 +99,6 @@ export default class SearchAppsForm extends React.Component {
                 companies: false
 
             }});
-        this.initializeLanguage();
     };
 
     _handleLanguageClicked = (event) => {
