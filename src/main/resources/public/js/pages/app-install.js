@@ -157,6 +157,14 @@ export class InstallForm extends React.Component {
         installed: false
     };
 
+    componentDidMount(){
+        window.onpopstate = () => {
+            if(location.href.match('store')){
+                console.log(location.href)
+            }
+        }
+    }
+
     _hasCitizens = () => {
         return this.props.app.target_citizens;
     };
@@ -208,6 +216,7 @@ export class InstallForm extends React.Component {
             this.setState({buying: false, error: {status: true, http_status: error.status}})
         }
     };
+
 
     render() {
         const options = this._createOptions();
