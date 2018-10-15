@@ -45,10 +45,11 @@
 .side-nav-header{
     display: flex;
     flex-flow: row wrap;
-    min-height: 8vh;
+    min-height: 6vh;
     width: 100%;
     align-items: center;
     justify-content: space-between;
+    padding: 1em 0 0 0;
 
 }
 

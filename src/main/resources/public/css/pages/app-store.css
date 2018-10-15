@@ -100,12 +100,15 @@
     border-color: var(--primary-color) !important;
 }
 
-.swal2-cancel {
+.swal2-cancel, .swal2-cancel:focus {
     background-color: var(--alert-color) !important;
+    box-shadow: none !important;
 }
 
-.swal2-confirm {
+.swal2-confirm, .swal2-confirm:focus {
     background-color: var(--primary-color) !important;
+    box-shadow: none !important;
 }
+
 
 

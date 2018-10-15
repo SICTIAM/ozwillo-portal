@@ -13,3 +13,7 @@
     padding-top: 5%;
 }
 
+#search-apps-form .react-autosuggest__container{
+    width: 100%;
+}
+

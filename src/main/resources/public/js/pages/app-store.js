@@ -40,6 +40,11 @@ export default class AppStore extends React.Component {
     _askForFilters = () => {
         const potentialOldFilters = this._getFiltersFromLocalStorage();
         const askFilterPermission = JSON.parse(localStorage.getItem("askFilterPermission"));
+        let numberPotentialActiveFilters = 0;
+        if (potentialOldFilters) {
+            const filters = this._transformSearchFilters(potentialOldFilters);
+            numberPotentialActiveFilters = this._countActiveFilters(filters);
+        }
 
         this.initialize();
 
@@ -47,7 +52,7 @@ export default class AppStore extends React.Component {
             this.setState({filters: potentialOldFilters}, () => {
                 this._setFiltersInLocalStorage(potentialOldFilters);
             });
-        } else if (potentialOldFilters && askFilterPermission) {
+        } else if (potentialOldFilters && askFilterPermission && numberPotentialActiveFilters > 0) {
             swal({
                 title: this.context.t("apply-old-filters"),
                 type: 'info',
@@ -57,9 +62,9 @@ export default class AppStore extends React.Component {
             }).then((result) => {
                 if (result.value) {
                     this.setState({filters: potentialOldFilters}, () => {
-                        const filters = this._transformSearchFilters();
-                        this._countActiveFilters(filters);
                         this._setFiltersInLocalStorage(potentialOldFilters);
+                        this.setState({activeFiltersNumber: numberPotentialActiveFilters});
+                        this._getApps();
                     });
                 }
             })
@@ -96,12 +101,11 @@ export default class AppStore extends React.Component {
         this.updateFilters(null, "searchText", event.target.value);
     };
 
-    _transformSearchFilters = () => {
+    _transformSearchFilters = (filters) => {
         const supported_locales = [];
-        if (this.state.filters.selectedLanguage !== 'all') {
-            supported_locales.push(this.state.filters.selectedLanguage);
+        if (filters && filters.selectedLanguage !== 'all') {
+            supported_locales.push(filters.selectedLanguage);
         }
-        const {filters} = this.state;
         return {
             target_citizens: filters.audience.citizens,
             target_publicbodies: filters.audience.publicbodies,
@@ -110,6 +114,7 @@ export default class AppStore extends React.Component {
             paid: filters.payment.paid,
             supported_locales: supported_locales,
             organizationId: filters.selectedOrganizationId,
+            installed_status: filters.installStatus,
             geoArea_AncestorsUris: filters.geoArea.ancestors,
             category_ids: [],
             q: filters.searchText
@@ -128,12 +133,13 @@ export default class AppStore extends React.Component {
         let counter = 0;
         for (let key in filters) {
             let elem = filters[key];
+            //exclude from the filter count the query "q"
             if ((elem && Array.isArray(elem) && elem.length > 0)
-                || (elem && elem !== "" && !Array.isArray(elem))) {
+                || (key !== "q" && elem && elem !== "" && !Array.isArray(elem))) {
                 counter++;
             }
         }
-        this.setState({activeFiltersNumber: counter});
+        return counter;
     };
 
     _resetFilters = () => {
@@ -146,8 +152,9 @@ export default class AppStore extends React.Component {
     };
 
     _getApps = async () => {
-        const filters = this._transformSearchFilters();
-        this._countActiveFilters(filters);
+        const filters = this._transformSearchFilters(this.state.filters);
+        const numberActiveFilters = this._countActiveFilters(filters);
+        this.setState({activeFiltersNumber: numberActiveFilters});
         try {
             const res = await customFetch(`/api/store/applications`, {urlParams: filters});
             this.setState({
@@ -162,11 +169,14 @@ export default class AppStore extends React.Component {
     };
 
     _displayApps = () => {
-        return this.state.apps.map((app) => {
-            return (
-                <App key={app.id} app={app} config={this.state.config}/>
-            );
-        });
+        const {apps} = this.state;
+        return apps
+            .map((app) => {
+                return (
+                    <App key={app.id} app={app} config={this.state.config}/>
+                );
+            });
+
     };
 
     _handleScroll = (e) => {
@@ -187,11 +197,11 @@ export default class AppStore extends React.Component {
         const {loading, activeFiltersNumber, config, filters} = this.state;
         const filterCounter = activeFiltersNumber > 0 &&
             <div className={"badge-filter-close"}>
-                <CustomTooltip title={this.context.t("active-filter")}>{activeFiltersNumber}</CustomTooltip>
+                <CustomTooltip title={this.context.t("active-filters")}>{activeFiltersNumber}</CustomTooltip>
             </div>;
         const filterCounterHeader = activeFiltersNumber > 0 &&
             <React.Fragment>
-                <div className={"active-filters"}>{this.context.t("active-filters")} : </div>
+                <div className={"active-filters"}>{this.context.t("active-filters")} :</div>
                 <div className={"badge-filter-open"}>
                     <CustomTooltip title={this.context.t("active")}>
                         {activeFiltersNumber}

@@ -78,6 +78,7 @@ public class StoreController {
         @RequestParam boolean paid,
         @RequestParam(required = false) List<String> supported_locales,
         @RequestParam(required = false) String organizationId,
+        @RequestParam(required = false) String installed_status,
         @RequestParam(required = false) List<String> geoArea_AncestorsUris,
         @RequestParam(required = false) List<String> category_ids,
         @RequestParam(required = false) String q,
@@ -98,7 +99,7 @@ public class StoreController {
         List<Locale> supportedLocales = supported_locales == null ? null : supported_locales.stream()
             .map(localeString -> Locale.forLanguageTag(localeString)).collect(Collectors.toList());
         List<StoreApplication> apps = appstoreService.getAll(audiences, paymentOptions,
-            supportedLocales, organizationId, geoArea_AncestorsUris, category_ids, q, last).stream()
+            supportedLocales, organizationId, installed_status, geoArea_AncestorsUris, category_ids, q, last).stream()
             .map(this::toStoreApplication)
             .collect(Collectors.toList());
         //apps = new ArrayList<StoreApplication>(); // for easy testing

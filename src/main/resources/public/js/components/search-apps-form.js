@@ -13,6 +13,7 @@ export default class SearchAppsForm extends React.Component {
         languages: [],
         selectedLanguage: '',
         selectedOrganizationId: '',
+        installStatus: '',
         geoArea: '',
         organizations: null,
         payment: {
@@ -126,6 +127,13 @@ export default class SearchAppsForm extends React.Component {
         this.props.updateFilter(null, "selectedOrganizationId", selectedOrganizationId);
     };
 
+    _handleInstallStatusChange = (event) => {
+        const installStatus = event.target.value;
+        console.log(installStatus);
+        this.setState({installStatus: installStatus});
+        this.props.updateFilter(null, "installStatus", installStatus);
+    };
+
     _handleOnPaymentChange = (event) => {
         const inputModified = event.target.name;
         let {payment} = this.state;
@@ -144,7 +152,7 @@ export default class SearchAppsForm extends React.Component {
     };
 
     render() {
-        const {languages, selectedLanguage, payment, audience, selectedOrganizationId, organizations} = this.state;
+        const {languages, selectedLanguage, payment, audience, selectedOrganizationId, organizations, installStatus} = this.state;
         const languageComponents = languages.map(language =>
             <option key={language} value={language}>{this.context.t(`store.language.${language}`)}</option>
         );
@@ -179,6 +187,18 @@ export default class SearchAppsForm extends React.Component {
                                 onChange={this._handleOrganizationChange}
                                 value={selectedOrganizationId}>
                             {organizationComponents}
+                        </select>
+                    </LabelSection>
+                }
+                {/*INSTALLED*/}
+                {selectedOrganizationId &&
+                    <LabelSection label={this.context.t('my.apps.status')}>
+                        <select id="installed" className="form-control"
+                                onChange={this._handleInstallStatusChange}
+                                value={installStatus}>
+                            <option value={''}>{this.context.t('all')}</option>
+                            <option value={"installed"}>{this.context.t('installed')}</option>
+                            <option value={"not_installed"}>{this.context.t('not-installed')}</option>
                         </select>
                     </LabelSection>
                 }

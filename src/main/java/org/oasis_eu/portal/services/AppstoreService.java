@@ -90,7 +90,7 @@ public class AppstoreService {
      * @return
      */
     public List<AppstoreHit> getAll(List<Audience> targetAudiences, List<PaymentOption> paymentOptions,
-                                    List<Locale> supportedLocales, String organizationId, List<String> geographicalAreas,
+                                    List<Locale> supportedLocales, String organizationId, String installed_status, List<String> geographicalAreas,
                                     List<String> categoryIds, String q, int from) {
 
         if (addCurrentToSupportedLocalesIfNone) {
@@ -111,12 +111,13 @@ public class AppstoreService {
                     .filter(app -> app.getTargetAudience().stream().anyMatch(audience -> audience.isCompatibleWith(organization.getType())))
                     .collect(Collectors.toList());
 
-
             //return all the applications available for a specific organization with the install option
-            return catalogEntryLst.stream().filter(Objects::nonNull)
+            return catalogEntryLst.stream()
+                    .filter(Objects::nonNull)
                     .map(catalogEntry -> new AppstoreHit(RequestContextUtils.getLocale(request), catalogEntry,
                             imageService.getImageForURL(catalogEntry.getIcon(RequestContextUtils.getLocale(request)), ImageFormat.PNG_64BY64, false),
                             getOrganizationName(catalogEntry), getApplicationInstallationOptionFromOrganization(organization, catalogEntry)))
+                    .filter(appstoreHit -> installed_status.equals("") || appstoreHit.getInstallationOption().toString().equals(installed_status.toUpperCase()))
                     .collect(Collectors.toList());
         }
 
@@ -228,7 +229,7 @@ public class AppstoreService {
         if(installed){
             return InstallationOption.INSTALLED;
         }else{
-            return InstallationOption.valueOf(entry.getPaymentOption().toString());
+            return InstallationOption.NOT_INSTALLED;
         }
     }
 
