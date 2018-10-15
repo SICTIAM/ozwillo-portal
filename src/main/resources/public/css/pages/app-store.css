@@ -92,3 +92,20 @@
     bottom: -0.3em;
     left: -1em;
 }
+
+/*Sweet alert style*/
+
+.swal2-icon{
+    color: var(--secondary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.swal2-cancel {
+    background-color: var(--alert-color) !important;
+}
+
+.swal2-confirm {
+    background-color: var(--primary-color) !important;
+}
+
+

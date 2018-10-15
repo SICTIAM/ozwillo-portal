@@ -52,8 +52,6 @@ export default class AppStore extends React.Component {
                 title: this.context.t("apply-old-filters"),
                 type: 'info',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
                 cancelButtonText: this.context.t("ui.cancel"),
                 confirmButtonText: this.context.t("ui.yes")
             }).then((result) => {
