@@ -2,11 +2,8 @@
     background-color: var(--tertiary-color);
     box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.2);
     display: flex;
-    width: 0;
-    position: relative;
     z-index: 1;
     overflow-x: hidden;
-    transition: 0.5s;
     flex-direction: column;
     max-height: 80vh;
 }
@@ -14,6 +11,7 @@
 
 .side-nav .content{
     padding-top: 10%;
+    /*transition: width 0s 0.4s;*/
 }
 
 .side-nav-tongue{

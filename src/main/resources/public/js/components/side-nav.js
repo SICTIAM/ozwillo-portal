@@ -18,12 +18,20 @@ export default class SideNav extends React.Component {
         const {isOpen} = this.state;
         if (isOpen) {
             return {
-                width: '250px'
-            }
+                width: '250px',
+                transform : 'translate(0px, 0px)',
+                transition: 'transform 0.8s, margin-right 0.85s',
+                marginRight: '0'
+        }
         } else {
             return {
-                width: '0'
-            }
+                width: '250px',
+                transform : 'translateX(-250px)',
+                transition: 'transform 0.8s, margin-right 0.85s',
+                marginRight: '-250px'
+
+
+        }
         }
     };
 

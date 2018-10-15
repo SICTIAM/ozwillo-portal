@@ -34,21 +34,20 @@
 .app-store-container .search-bar{
     width: 40%;
     position: absolute;
-    z-index: 10;
+    z-index: 2;
     /*border-radius: 50px;*/
     margin-top: 0;
     box-shadow: 0.2em 0.2em 0.4em rgba(0, 0, 0, .3);
-    transition: all 0.3s ease-in;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border-top: 0;
     border-color: var(--primary-color);
+    transform: translate(0,0);
+    transition: transform 0.3s ease-in;
 }
 
-.app-store-container .search-bar.invisible{
-    height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
+.app-store-container .search-bar.folds{
+    transform: translateY(-3em);
 }
 
 .app-store-wrapper::-webkit-scrollbar-thumb{

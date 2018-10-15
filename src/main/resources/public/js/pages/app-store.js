@@ -175,7 +175,7 @@ export default class AppStore extends React.Component {
         let diff = Math.abs(newScrollValue - scrollValue);
         if (diff > 5) {
             if (newScrollValue > scrollValue) {
-                this.setState({isSearchBarVisible: "invisible", scrollValue: newScrollValue});
+                this.setState({isSearchBarVisible: "folds", scrollValue: newScrollValue});
             } else {
                 this.setState({isSearchBarVisible: "visible", scrollValue: newScrollValue});
             }
