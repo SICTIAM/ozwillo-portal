@@ -54,15 +54,10 @@
     background: red;
 }
 
-.reset-filters{
-    flex-direction: row;
-    display: flex;
-}
-
-.reset-filters > i {
+.reset-filters {
     font-size: 1.5em;
     cursor: pointer;
-    color:var(--secondary-color)
+    color:var(--secondary-color);
 }
 
 .badge-filter-open{
@@ -74,12 +69,12 @@
     justify-content: center;
     align-items: center;
     display: flex;
-    position: relative;
-    top: -0.8em;
-    right: 0.5em;
+    /*position: relative;*/
+    /*top: -0.8em;*/
+    /*right: 0.5em;*/
 }
 
-.badge-filter-close{
+.badge-filter-close {
     background-color: var(--alert-color);
     width: 25px;
     height: 25px;
@@ -91,6 +86,11 @@
     position: relative;
     bottom: -0.3em;
     left: -1em;
+}
+
+.active-filters {
+    font-size: 1.2em;
+
 }
 
 /*Sweet alert style*/

@@ -57,6 +57,8 @@ export default class AppStore extends React.Component {
             }).then((result) => {
                 if (result.value) {
                     this.setState({filters: potentialOldFilters}, () => {
+                        const filters = this._transformSearchFilters();
+                        this._countActiveFilters(filters);
                         this._setFiltersInLocalStorage(potentialOldFilters);
                     });
                 }
@@ -127,7 +129,7 @@ export default class AppStore extends React.Component {
         for (let key in filters) {
             let elem = filters[key];
             if ((elem && Array.isArray(elem) && elem.length > 0)
-                || (elem && elem !== '' && !Array.isArray(elem))) {
+                || (elem && elem !== "" && !Array.isArray(elem))) {
                 counter++;
             }
         }
@@ -188,14 +190,17 @@ export default class AppStore extends React.Component {
                 <CustomTooltip title={this.context.t("active-filter")}>{activeFiltersNumber}</CustomTooltip>
             </div>;
         const filterCounterHeader = activeFiltersNumber > 0 &&
-            <div className={"reset-filters"}>
-                <i className={"fa fa-trash"} onClick={this._resetFilters}/>
+            <React.Fragment>
+                <div className={"active-filters"}>{this.context.t("active-filters")} : </div>
                 <div className={"badge-filter-open"}>
-                    <CustomTooltip title={this.context.t("active-filter")}>
+                    <CustomTooltip title={this.context.t("active")}>
                         {activeFiltersNumber}
                     </CustomTooltip>
                 </div>
-            </div>;
+                <CustomTooltip title={this.context.t("reset-filters")}>
+                    <i className={"reset-filters fa fa-trash"} onClick={this._resetFilters}/>
+                </CustomTooltip>
+            </React.Fragment>;
 
 
         return (

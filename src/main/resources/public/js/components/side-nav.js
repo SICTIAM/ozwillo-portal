@@ -1,6 +1,4 @@
 import React from "react";
-import SearchAppForm from "./search-apps-form";
-import customFetch from "../util/custom-fetch";
 import PropTypes from 'prop-types';
 
 export default class SideNav extends React.Component {
