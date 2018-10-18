@@ -8,6 +8,7 @@ import CustomTooltip from "../components/custom-tooltip";
 import PropTypes from "prop-types";
 
 import swal from "sweetalert2";
+import {fetchUserInfo} from "../actions/user";
 
 export default class AppStore extends React.Component {
 
@@ -25,9 +26,15 @@ export default class AppStore extends React.Component {
         config: {}
     };
 
-    componentDidMount() {
-        this._askForFilters();
-    }
+    componentDidMount = async () => {
+        //check if the user is connected
+        const user = await fetchUserInfo();
+        if(user){
+            this._askForFilters();
+        }else{
+            this.initialize();
+        }
+    };
 
     componentWillUnmount() {
         if (location.href.match("store")) {
