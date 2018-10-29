@@ -30,6 +30,7 @@
 @import 'components/label-section.css';
 @import 'components/pill-button.css';
 @import 'components/modal-image.css';
+@import 'components/app.css';
 /* Pages */
 @import 'pages/dashboard.css';
 @import 'pages/notifications.css';
@@ -37,7 +38,6 @@
 @import 'pages/organization-search.css';
 @import 'pages/organization-desc.css';
 @import 'pages/profile.css';
-@import 'pages/store.css';
 @import 'pages/synchronize-fc-profile.css';
 @import 'pages/app-store.css';
 @import 'pages/app-install.css';

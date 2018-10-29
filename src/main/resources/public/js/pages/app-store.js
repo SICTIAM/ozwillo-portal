@@ -21,7 +21,7 @@ export default class AppStore extends React.Component {
         loading: true,
         maybeMoreApps: false,
         activeFiltersNumber: 0,
-        isSearchBarVisible: "visible",
+        isSearchBarVisible: "fix",
         scrollValue: 0,
         config: {}
     };
@@ -44,7 +44,7 @@ export default class AppStore extends React.Component {
         }
     }
 
-    _askForFilters = () => {
+    _askForFilters = async () => {
         const potentialOldFilters = this._getFiltersFromLocalStorage();
         const askFilterPermission = JSON.parse(localStorage.getItem("askFilterPermission"));
         let numberPotentialActiveFilters = 0;
@@ -53,7 +53,7 @@ export default class AppStore extends React.Component {
             numberPotentialActiveFilters = this._countActiveFilters(filters);
         }
 
-        this.initialize();
+        await this.initialize();
 
         if (potentialOldFilters && !askFilterPermission) {
             this.setState({filters: potentialOldFilters}, () => {
@@ -190,12 +190,14 @@ export default class AppStore extends React.Component {
         const newScrollValue = e.target.scrollTop;
         const {scrollValue} = this.state;
         let diff = Math.abs(newScrollValue - scrollValue);
-        if (diff > 5) {
+        if (diff > 5 && newScrollValue > 80) {
             if (newScrollValue > scrollValue) {
                 this.setState({isSearchBarVisible: "folds", scrollValue: newScrollValue});
             } else {
                 this.setState({isSearchBarVisible: "visible", scrollValue: newScrollValue});
             }
+        }else if(newScrollValue < 80){
+            this.setState({isSearchBarVisible: "fix", scrollValue: newScrollValue});
         }
     };
 
@@ -208,15 +210,15 @@ export default class AppStore extends React.Component {
             </div>;
         const filterCounterHeader = activeFiltersNumber > 0 &&
             <React.Fragment>
+                <CustomTooltip title={this.context.t("reset-filters")}>
+                    <i className={"reset-filters fa fa-trash"} onClick={this._resetFilters}/>
+                </CustomTooltip>
                 <div className={"active-filters"}>{this.context.t("active-filters")} :</div>
                 <div className={"badge-filter-open"}>
                     <CustomTooltip title={this.context.t("active")}>
                         {activeFiltersNumber}
                     </CustomTooltip>
                 </div>
-                <CustomTooltip title={this.context.t("reset-filters")}>
-                    <i className={"reset-filters fa fa-trash"} onClick={this._resetFilters}/>
-                </CustomTooltip>
             </React.Fragment>;
 
 
@@ -229,17 +231,21 @@ export default class AppStore extends React.Component {
                         </div>
                     </div>
                     :
-                    <div className={"app-store-wrapper"}>
+                    <div className={"app-store-wrapper oz-body"}>
                         <SideNav isCloseChildren={filterCounter} isOpenHeader={filterCounterHeader}>
                             <SearchAppForm ref={"searchAppForm"} updateFilter={this.updateFilters} config={config}
                                            filters={filters}/>
                         </SideNav>
                         <div className={"app-store-container"} id="store-apps" onScroll={this._handleScroll}>
 
+                            <header className="title">
+                                <span>{this.context.t('ui.appstore')}</span>
+                            </header>
+
                             <input type="text" id="fulltext"
                                    className={"form-control search-bar " + this.state.isSearchBarVisible}
                                    onChange={this._handleFullTextSearchChanged}
-                                   placeholder={"keywords"} name="fullTextSearch"/>
+                                   placeholder={this.context.t("keywords")} name="fullTextSearch"/>
                             <div className={"app-list"}>
                                 {this._displayApps()}
                             </div>

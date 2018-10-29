@@ -21,6 +21,7 @@
     display: flex;
     justify-content: center;
     flex-flow: wrap row;
+    min-height: 59vh;
 
 }
 
@@ -32,7 +33,7 @@
 }
 
 .app-store-container .search-bar{
-    width: 40%;
+    width: 40vw;
     position: absolute;
     z-index: 2;
     /*border-radius: 50px;*/
@@ -48,6 +49,20 @@
 
 .app-store-container .search-bar.folds{
     transform: translateY(-3em);
+}
+
+.app-store-container .search-bar.fix{
+    position: relative !important;
+    width: 40vw;
+    margin-left: 20vw;
+    margin-right: 20vw;
+    align-self: flex-start;
+    border: 1px solid var(--primary-color) !important;
+}
+
+.app-store-container .title{
+    width: 100%;
+    max-height: 5vh;
 }
 
 .app-store-wrapper::-webkit-scrollbar-thumb{
@@ -90,8 +105,17 @@
 
 .active-filters {
     font-size: 1.2em;
+    margin-left: 0.5em;
+    margin-right: 1em;
 
 }
+
+#store-loadmore {
+    padding: 30px 0 30px 0;
+}
+
+
+
 
 /*Sweet alert style*/
 
