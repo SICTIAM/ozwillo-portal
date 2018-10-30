@@ -43,6 +43,8 @@
 #store-apps .app .description .app-header {
     height: 160px;
     min-height: 128px;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
 }
 
 #store-apps .app .description .app-name {

@@ -16,5 +16,6 @@ export default class FilterApp {
     };
     searchText = '';
     installStatus = '';
+    last = 0;
 
 }

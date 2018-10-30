@@ -19,19 +19,21 @@ export default class AppStore extends React.Component {
     state = {
         filters: new FilterApp(),
         loading: true,
+        moreAppsLoading: false,
         maybeMoreApps: false,
         activeFiltersNumber: 0,
         isSearchBarVisible: "fix",
         scrollValue: 0,
-        config: {}
+        config: {},
+        apps: []
     };
 
     componentDidMount = async () => {
         //check if the user is connected
         const user = await fetchUserInfo();
-        if(user){
+        if (user) {
             this._askForFilters();
-        }else{
+        } else {
             this.initialize();
         }
     };
@@ -55,9 +57,12 @@ export default class AppStore extends React.Component {
 
         await this.initialize();
 
+
         if (potentialOldFilters && !askFilterPermission) {
             this.setState({filters: potentialOldFilters}, () => {
                 this._setFiltersInLocalStorage(potentialOldFilters);
+                this.setState({activeFiltersNumber: numberPotentialActiveFilters});
+                this._getApps();
             });
         } else if (potentialOldFilters && askFilterPermission && numberPotentialActiveFilters > 0) {
             swal({
@@ -73,6 +78,9 @@ export default class AppStore extends React.Component {
                         this.setState({activeFiltersNumber: numberPotentialActiveFilters});
                         this._getApps();
                     });
+                } else {
+                    //reset local storage
+                    this._setFiltersInLocalStorage(new FilterApp());
                 }
             })
         }
@@ -124,7 +132,8 @@ export default class AppStore extends React.Component {
             installed_status: filters.installStatus,
             geoArea_AncestorsUris: filters.geoArea.ancestors,
             category_ids: [],
-            q: filters.searchText
+            q: filters.searchText,
+            last: filters.last
         };
     };
 
@@ -175,6 +184,45 @@ export default class AppStore extends React.Component {
         }
     };
 
+    _loadMoreApps = async () => {
+        const {apps} = this.state;
+        this.setState({moreAppsLoading: true});
+
+        const filters = this._transformSearchFilters(this.state.filters);
+        filters.last = apps.length;
+
+        try {
+            const res = await customFetch(`/api/store/applications`, {urlParams: filters});
+            this.setState({
+                apps: apps.concat(res.apps),
+                maybeMoreApps: res.maybeMoreApps,
+                moreAppsLoading: false
+            });
+        } catch (err) {
+            console.error(err.toString())
+        }
+    };
+
+    _displayLoadMore = () => {
+        const {moreAppsLoading, maybeMoreApps} = this.state;
+        return (
+            <div className={"load-more-apps"}>
+                {moreAppsLoading && maybeMoreApps ?
+                    <div className="text-center">
+                        <i className="fa fa-spinner fa-spin loading"></i> {this.context.t('ui.loading')}
+                    </div>
+                    : (
+                        maybeMoreApps ? <div className="text-center">
+                            <button className="btn btn-lg btn-default"
+                                    onClick={this._loadMoreApps}>{this.context.t('load-more')}</button>
+                        </div> : null
+                    )
+                }
+            </div>
+
+        )
+    };
+
     _displayApps = () => {
         const {apps} = this.state;
         return apps
@@ -196,14 +244,14 @@ export default class AppStore extends React.Component {
             } else {
                 this.setState({isSearchBarVisible: "visible", scrollValue: newScrollValue});
             }
-        }else if(newScrollValue < 80){
+        } else if (newScrollValue < 80) {
             this.setState({isSearchBarVisible: "fix", scrollValue: newScrollValue});
         }
     };
 
     render() {
         this.cancel = this.context.t("ui.cancel");
-        const {loading, activeFiltersNumber, config, filters} = this.state;
+        const {loading, activeFiltersNumber, config, filters, maybeMoreApps, moreAppsLoading} = this.state;
         const filterCounter = activeFiltersNumber > 0 &&
             <div className={"badge-filter-close"}>
                 <CustomTooltip title={this.context.t("active-filters")}>{activeFiltersNumber}</CustomTooltip>
@@ -249,6 +297,7 @@ export default class AppStore extends React.Component {
                             <div className={"app-list"}>
                                 {this._displayApps()}
                             </div>
+                            {this._displayLoadMore()}
                         </div>
                     </div>
                 }

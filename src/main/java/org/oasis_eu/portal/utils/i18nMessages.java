@@ -55,7 +55,7 @@ public final class i18nMessages {
             "error-code","already-rated", "launch", "load-more", "choose-install-type", "active-filters", "reset-filters", "active",
         "rating.half-star", "rating.one-star", "rating.one-half-star", "rating.two-stars", "rating.two-half-stars", "rating.three-stars",
         "rating.three-half-stars", "rating.four-stars", "rating.four-half-stars", "rating.five-stars",
-        "install.orgType.title", "ad.description", "ad.title.part1", "ad.title.part2", "ad.joinUs","apply-old-filters");
+        "install.orgType.title", "ad.description", "ad.title.part1", "ad.title.part2", "ad.joinUs","apply-old-filters", "all");
 
     private static final List<String> storeInstallkeys = Arrays.asList("type.ORG", "type.PERSONAL", "success-msg-1", "success-msg-2", "success-msg-3",
         "success-msg-4");
