@@ -19,7 +19,7 @@ class App extends React.Component {
     componentDidMount = async () => {
         let res = await customFetch(`/api/env`);
         let config = await customFetch('/api/config');
-        const {tag: googleTag} = await customFetch('/api/config/googleTag');
+        const googleTag = await customFetch('/api/config/googleTag');
 
         localStorage.setItem('googleTag', googleTag);
         this.setState({language: config.language, googleTag: googleTag})
