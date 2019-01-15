@@ -113,7 +113,7 @@
   "notif.read": "Archived",
   "notif.unread": "Unread",
   "organization.desc.CSV-helper": "CSV file must contain one unique email column",
-  "organization.desc.add-instances-to-members": "organization.desc.add-instances-to-members",
+  "organization.desc.add-instances-to-members": "add instances to members",
   "organization.desc.add-new-members": "Add new members",
   "organization.desc.add-to-instance-by-email": "organization.desc.add-to-instance-by-email",
   "organization.desc.add-to-instance-from-members": "organization.desc.add-to-instance-from-members",

@@ -113,7 +113,7 @@
   "notif.read": "Архивирани",
   "notif.unread": "Непрочетени",
   "organization.desc.CSV-helper": "",
-  "organization.desc.add-instances-to-members": "",
+  "organization.desc.add-instances-to-members": "добавете инстанция към новия член",
   "organization.desc.add-new-members": "",
   "organization.desc.add-to-instance-by-email": "",
   "organization.desc.add-to-instance-from-members": "",
