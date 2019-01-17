@@ -89,11 +89,22 @@ class MemberDropdownHeader extends React.Component {
 
                     {
                         isPending &&
+                        //<CustomTooltip title={i18n._(t`tooltip.pending.member`)}> </CustomTooltip>
                         <CustomTooltip title={i18n._(t`tooltip.pending`)}>
                             <button type="button" className="btn icon">
                                 <i className="fa fa-stopwatch option-icon loading"/>
                             </button>
                         </CustomTooltip>
+                    }
+
+                    {
+                        isPending &&
+                       <CustomTooltip title={i18n._(t`tooltip.pending.member`)}>
+                        <button type="button" className="btn icon">
+                            <i className="fa fa-info-circle option-icon"/>
+                        </button>
+                        </CustomTooltip>
+
                     }
 
                     {
@@ -125,6 +136,8 @@ class MemberDropdownHeader extends React.Component {
                             </button>
                         </CustomTooltip>
                     }
+
+
                 </div>
             </form>
         </header>;
