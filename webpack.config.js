@@ -110,7 +110,7 @@ if (TARGET === 'start' || !TARGET) {
                 '.localtest.me'
             ],
             proxy: {
-                "*": "http://localhost:8080"
+                "*": "http://localhost:8081"
             }
         },
         devtool: 'source-map',
