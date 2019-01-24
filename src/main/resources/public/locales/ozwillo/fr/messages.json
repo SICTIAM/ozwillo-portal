@@ -1,5 +1,5 @@
 {
-  "<0>{email}</0> will be invited to the organization": "<0>{email}</0> sera invité à la collectivité",
+  "<0>{email}</0> will be invited to the organization": "<0>{email}</0> sera invité à l'organisation",
   "Active filters": "Filtres actifs",
   "Emails from CSV file <0>{csvFileName}</0> will be invited to the organization": "Les emails du CSV <0>{csvFileName}</0> vont être invités à la collectivité",
   "For which organization": "Pour quelle collectivité",
@@ -131,7 +131,7 @@
   "organization.form.title": "Collectivité",
   "organization.search.history.description": "Dernières collectivités visitées",
   "organization.search.history.empty": "Dès que vous aurez consulté une ou plusieurs de vos organsations, elles apparaîtront ci-dessous : pour les trouver, rendez-vous dans le champ de recherche ci-dessus !",
-  "organization.search.new": "Vous n'avez pas trouvé votre collectivité ? Cliquez ici pour la créer",
+  "organization.search.new": "Vous n'avez pas trouvé votre collectivité ? Cliquez sur cet icône pour en créer une.",
   "organization.search.title": "Collectivités",
   "privacy": "",
   "reset-filters": "Supprimer tous les filtres",
