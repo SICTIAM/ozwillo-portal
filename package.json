@@ -70,6 +70,7 @@
   "dependencies": {
     "@lingui/core": "^2.7.2",
     "@lingui/react": "^2.7.2",
+    "bootstrap": "^4.2.1",
     "bootstrap-datepicker": "^1.8.0",
     "bootstrap-sass": "^3.3.7",
     "create-react-class": "^15.6.3",
