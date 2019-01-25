@@ -1,7 +1,7 @@
 {
   "<0>{email}</0> will be invited to the organization": "<0>{email}</0> sera invité à l'organisation",
   "Active filters": "Filtres actifs",
-  "Emails from CSV file <0>{csvFileName}</0> will be invited to the organization": "Les emails du CSV <0>{csvFileName}</0> vont être invités à la collectivité",
+  "Emails from CSV file <0>{csvFileName}</0> will be invited to the organization": "Les emails du CSV <0>{csvFileName}</0> vont être invités à l'organisation",
   "For which organization": "Pour quelle organisation",
   "For which usage": "Pour quel usage",
   "active": "Activé(s)",
