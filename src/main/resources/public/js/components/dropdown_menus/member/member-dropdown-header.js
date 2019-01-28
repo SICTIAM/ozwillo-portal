@@ -97,16 +97,6 @@ class MemberDropdownHeader extends React.Component {
                     }
 
                     {
-                        isPending &&
-                       <CustomTooltip title={i18n._(t`tooltip.pending.member`)}>
-                        <button type="button" className="btn icon">
-                            <i className="fa fa-info-circle option-icon"/>
-                        </button>
-                        </CustomTooltip>
-
-                    }
-
-                    {
                         member.admin &&
                         <CustomTooltip title={i18n._(t`tooltip.remove.right.admin`)}>
                             <button type="button" className="btn icon"

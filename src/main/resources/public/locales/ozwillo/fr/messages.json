@@ -180,7 +180,7 @@
   "tooltip.delete.organization": "Supprimer la collectivité",
   "tooltip.instances": "Afficher la liste des applications",
   "tooltip.members": "Afficher les membres",
-  "tooltip.pending": "En attente",
+  "tooltip.pending": "En attente d'acceptation du membre.",
   "tooltip.pending.member": "Le membre doit accepter l'invitation.",
   "tooltip.remove.icon": "Supprimer l'icône du bureau",
   "tooltip.remove.instance": "Retirer l'application",
