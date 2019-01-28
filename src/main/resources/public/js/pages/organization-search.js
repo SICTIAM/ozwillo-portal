@@ -103,10 +103,10 @@ class OrganizationSearch extends React.Component {
                             this.setState({organizationSelected: value})
                         }}
                         placeholder={i18n._(t`search.organization.search-organization`)}
-                    />Vous n'avez pas trouvé votre organisation ? Cliquez sur le bouton ci-dessous pour en créer une.'
+                    />{i18n._(t`search.organization.not.found-organization`)}
                     <div className="flex-row options">
                         <Link to="/my/organization/create" className={"new-organization"}>
-                            <h1><i className="fa fa-building icon" alt="collectivités"/></h1>
+                            <button type="submit" className="btn btn-submit">{i18n._(t`search.organization.create-organization`)}</button>
                         </Link>
                     </div>
                 </form>

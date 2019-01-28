@@ -143,6 +143,8 @@
   "search.organization.business-id.tr": "N. TVA",
   "search.organization.cannot-be-used": "Votre collectivité est déjà administrée dans le portail, demandez à un collègue qui en est administrateur de vous y inviter !",
   "search.organization.search-organization": "Recherchez ici le nom d'une collectivité à laquelle vous appartenez",
+  "search.organization.not.found-organization": "Vous n'avez pas trouvé votre collectivité ?",
+  "search.organization.create-organization": "Créer une collectivité",
   "search.organization.sector-type": "Type de secteur",
   "search.organization.sector-type.COMPANY": "Secteur privé",
   "search.organization.sector-type.PUBLIC_BODY": "Secteur public",

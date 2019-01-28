@@ -147,6 +147,8 @@
   "search.organization.sector-type.COMPANY": "Private entity",
   "search.organization.sector-type.PUBLIC_BODY": "Public body",
   "search.organization.title": "Organization",
+  "search.organization.not.found-organization": "You have not found your organization?",
+  "search.organization.create-organization": "Create an organization",
   "sorry": "sorry",
   "store.apply-old-filters": "Do you want to apply recent filters ?",
   "store.audience": "Audience",
