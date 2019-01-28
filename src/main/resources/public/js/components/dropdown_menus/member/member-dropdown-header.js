@@ -97,7 +97,7 @@ class MemberDropdownHeader extends React.Component {
                     }
 
                     {
-                        member.admin &&
+                        member.admin && isOrgAdmin &&
                         <CustomTooltip title={i18n._(t`tooltip.remove.right.admin`)}>
                             <button type="button" className="btn icon"
                                     onClick={!isPending && isOrgAdmin && this.memberRoleToggle || null}>
@@ -107,7 +107,7 @@ class MemberDropdownHeader extends React.Component {
                     }
 
                     {
-                        !member.admin && !isPending &&
+                        !member.admin && !isPending && isOrgAdmin &&
                         <CustomTooltip title={i18n._(t`tooltip.add.right.admin`)}>
                             <button type="button" className="btn icon"
                                     onClick={!isPending && isOrgAdmin && this.memberRoleToggle || null}>
