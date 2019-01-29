@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import { i18n } from "../config/i18n-config"
@@ -46,7 +45,7 @@ class OrganizationSearch extends React.Component {
                 this._sortOrganizationHistoryByDate(res);
                 this.setState({organizationsHistory: res, organizationHistoryMessage: ''});
             } else {
-                this.setState({organizationHistoryMessage: this.context.t("organization.search.history.empty")});
+                this.setState({organizationHistoryMessage: i18n._(t`organization.search.history.empty`)});
             }
         }catch(err){
             console.error(err);
