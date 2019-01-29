@@ -104,9 +104,9 @@ class OrganizationSearch extends React.Component {
                         }}
                         placeholder={i18n._(t`search.organization.search-organization`)}
                     />
-                    <div className="flex-row options">
+                    <div className="flex-row options">{i18n._(t`organization.search.new`)}
                         <Link to="/my/organization/create" className={"new-organization"}>
-                            {i18n._(t`organization.search.new`)}
+                            <button type="submit" class="btn btn-submit">{i18n._(t`organization.create.new`)}</button>
                         </Link>
                     </div>
                 </form>
