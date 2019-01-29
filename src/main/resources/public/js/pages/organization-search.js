@@ -16,6 +16,7 @@ import {fetchUserOrganizations} from '../actions/organization';
 import OrganizationAutoSuggest from "../components/autosuggests/organization-autosuggest";
 import OrganizationCard from "../components/organization-card"
 import {Redirect} from "react-router";
+import UserOrganizationHistoryService from '../util/user-organization-history-service';
 
 class OrganizationSearch extends React.Component {
 
@@ -31,24 +32,27 @@ class OrganizationSearch extends React.Component {
             organizationHistoryMessage: ''
         };
 
-        this.handleChange = this.handleChange.bind(this);
+        this._userOrganizationHistory = new UserOrganizationHistoryService();
     }
 
     componentDidMount() {
         this._handleOrganizationsHistory();
     }
 
-    _handleOrganizationsHistory = () => {
-        customFetch("/my/api/organizationHistory")
-            .then(res => {
-                if(res && res.length >0){
-                    this._sortOrganizationHistoryByDate(res);
-                    this.setState({organizationsHistory: res, organizationHistoryMessage: ''});
-                } else {
-                    this.setState({organizationHistoryMessage: i18n._(t`organization.search.history.empty`)});
-                }
-            });
+    _handleOrganizationsHistory = async () => {
+        try {
+            let res = await this._userOrganizationHistory.getOrganizationHistory();
+            if(res && res.length >0){
+                this._sortOrganizationHistoryByDate(res);
+                this.setState({organizationsHistory: res, organizationHistoryMessage: ''});
+            } else {
+                this.setState({organizationHistoryMessage: this.context.t("organization.search.history.empty")});
+            }
+        }catch(err){
+            console.error(err);
+        }
     };
+
 
     _sortOrganizationHistoryByDate = (array) =>{
         array.sort(function(a,b){
@@ -56,11 +60,19 @@ class OrganizationSearch extends React.Component {
         });
     };
 
-    handleChange(e) {
-        this.setState({
-            [e.currentTarget.name]: e.currentTarget.value
-        });
-    }
+    _handleOrganizationCardError = async (error, dcOrganizationId) => {
+        try {
+            let res = await this._userOrganizationHistory.deleteOrganizationHistoryEntry(dcOrganizationId);
+            if(res && res.length > 0) {
+                this.setState({organizationsHistory: res, organizationHistoryMessage: ''})
+            }else{
+                this._handleOrganizationsHistory()
+            }
+        }catch(err){
+            console.error(err);
+        }
+
+    };
 
     _displayOrganizationsHistory = () => {
         const {organizationsHistory, organizationHistoryMessage} = this.state;
@@ -69,7 +81,7 @@ class OrganizationSearch extends React.Component {
             organizationsHistory.map(organization => {
                 let dcOrganizationId = organization.dcOrganizationId;
                 let organizationCard = (
-                    <OrganizationCard key={dcOrganizationId} organization={organization}/>);
+                    <OrganizationCard key={dcOrganizationId} organization={organization} callBackError={this._handleOrganizationCardError}/>);
                 result.push(organizationCard)
             });
             return result;
