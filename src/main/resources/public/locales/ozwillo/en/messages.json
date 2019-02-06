@@ -16,9 +16,10 @@
   "could-not-install-app-400": "could-not-install-app-400",
   "could-not-install-app-500": "could-not-install-app-500",
   "create": "create",
-  "error-code": "error-code",
+  "error-code": "error code",
   "error.msg.csv-file-required": "Wrong type of file, only .csv accepted",
   "error.msg.user-already-invited": "User has already been invited, mail will not being sent...",
+  "error.msg.delete-organization": "You can not delete the organization... Check that the organization has any applications running",
   "franceconnect.form.desynchronize": "Desynchronize your account with FranceConnect",
   "franceconnect.form.desynchronize-without-pwd": "To desynchronize your account with FranceConnect you must create a password",
   "franceconnect.form.desynchronize-without-pwd-help": "franceconnect.form.desynchronize-without-pwd-help",
@@ -113,7 +114,7 @@
   "notif.read": "Archived",
   "notif.unread": "Unread",
   "organization.desc.CSV-helper": "CSV file must contain one unique email column",
-  "organization.desc.add-instances-to-members": "organization.desc.add-instances-to-members",
+  "organization.desc.add-instances-to-members": "You can eventually add applications to the members previously invited",
   "organization.desc.add-new-members": "Add new members",
   "organization.desc.add-to-instance-by-email": "organization.desc.add-to-instance-by-email",
   "organization.desc.add-to-instance-from-members": "organization.desc.add-to-instance-from-members",
@@ -209,5 +210,6 @@
   "ui.welcome": "Welcome",
   "ui.yes": "Yes",
   "{0}": "{0}",
+  "{days, plural, one {Will be deleted} other {Will be deleted in {days} days}}": "{days, plural, one {Will be deleted} other {Will be deleted in {days} days}}",
   "{message}": "{message}"
 }
