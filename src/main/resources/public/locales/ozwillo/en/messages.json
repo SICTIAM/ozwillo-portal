@@ -184,7 +184,7 @@
   "tooltip.remove.member": "Remove member",
   "tooltip.remove.right.admin": "Remove admin right",
   "tooltip.member.admin.info": "Director",
-  "tooltip.member.no.admin.info": "User",
+  "tooltip.member.user.info": "User",
   "tos": "tos",
   "ui.add": "Add",
   "ui.appstore": "App Store",
