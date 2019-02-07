@@ -184,7 +184,7 @@
   "tooltip.remove.member": "Retirer l'utilisateur",
   "tooltip.remove.right.admin": "Supprimer le droit administrateur",
   "tooltip.member.admin.info": "Administrateur",
-  "tooltip.member.no.admin.info": "Utilisateur",
+  "tooltip.member.user.info": "Utilisateur",
   "tos": "",
   "ui.add": "Ajouter",
   "ui.appstore": "Catalogue",
