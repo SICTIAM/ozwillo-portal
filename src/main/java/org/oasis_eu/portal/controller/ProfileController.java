@@ -55,6 +55,7 @@ public class ProfileController {
     @RequestMapping(method = RequestMethod.POST)
     public void save(@RequestBody UserProfile userProfile) {
         // TODO : why ??
+        userProfile.setFamilyName(userProfile.getFamilyName().toUpperCase());
         userProfile.setName(userProfile.getNickname()); // force name = nickname
         userProfileService.saveUserProfile(userProfile);
     }
