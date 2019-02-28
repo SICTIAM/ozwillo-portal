@@ -146,6 +146,31 @@ public class StoreController {
         ratingService.rate(appType, appId, rateRequest.rate);
     }
 
+    @RequestMapping(value = "/{appType}/{appId}/organization/disabled", method = GET)
+    public List<UIOrganization> organizationsDisabled(@PathVariable String appType, @PathVariable String appId) {
+        AppstoreHit info = appstoreService.getInfo(appId, CatalogEntryType.valueOf(appType.toUpperCase())); // #152 services can also be installed
+        List<UIOrganization> organizations = organizationService.getMyOrganizations();
+
+        return organizations
+                .stream()
+                .filter(o -> o.isAdmin())
+                .filter(o -> OrganizationStatus.AVAILABLE.equals(o.getStatus()))
+                .filter(o -> info.getCatalogEntry().getTargetAudience().stream().anyMatch(audience -> audience.isCompatibleWith(o.getType())))
+                .map(o ->  organizationService.getOrganizationFromKernel(o.getId()))
+                .filter(o ->
+                        o.getInstances()
+                        .stream()
+                        .filter(instance -> {
+                            if(CatalogEntryType.APPLICATION.toString().equals(appType.toUpperCase())){
+                               return instance.getApplicationInstance().getApplicationId().equals(appId);
+                            }else{
+                                return instance.getApplicationInstance().getProviderId().equals(appId);
+                            }
+                        }).collect(Collectors.toList()).size() > 0
+                )
+                .collect(Collectors.toList());
+    }
+
     /**
      * called by store to get organizations in which an app or service may be installed (org dropdown in the app modal)
      */
