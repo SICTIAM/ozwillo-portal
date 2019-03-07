@@ -79,6 +79,7 @@ public class StoreController {
         @RequestParam boolean target_companies,
         @RequestParam boolean free,
         @RequestParam boolean paid,
+        @RequestParam(required = false) String appType,
         @RequestParam(required = false) List<String> supported_locales,
         @RequestParam(required = false) String organizationId,
         @RequestParam(required = false) String installed_status,
@@ -101,7 +102,7 @@ public class StoreController {
 
         List<Locale> supportedLocales = supported_locales == null ? null : supported_locales.stream()
             .map(localeString -> Locale.forLanguageTag(localeString)).collect(Collectors.toList());
-        List<StoreApplication> apps = appstoreService.getAll(audiences, paymentOptions,
+        List<StoreApplication> apps = appstoreService.getAll(audiences, paymentOptions, appType,
             supportedLocales, organizationId, installed_status, geoArea_AncestorsUris, category_ids, q, last).stream()
             .map(this::toStoreApplication)
             .collect(Collectors.toList());

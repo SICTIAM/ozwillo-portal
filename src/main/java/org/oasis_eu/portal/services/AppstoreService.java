@@ -82,7 +82,7 @@ public class AppstoreService {
      * @param from
      * @return
      */
-    public List<AppstoreHit> getAll(List<Audience> targetAudiences, List<PaymentOption> paymentOptions,
+    public List<AppstoreHit> getAll(List<Audience> targetAudiences, List<PaymentOption> paymentOptions, String appType,
                                     List<Locale> supportedLocales, String organizationId, String installed_status, List<String> geographicalAreas,
                                     List<String> categoryIds, String q, int from) {
 
@@ -114,7 +114,8 @@ public class AppstoreService {
                     .collect(Collectors.toList());
         }
 
-        return catalogEntryLst.stream().filter(Objects::nonNull)
+        return catalogEntryLst.stream()
+                .filter(catalogEntry -> Objects.nonNull(catalogEntry) &&  (appType == null || catalogEntry.getType().toString().equals(appType.toUpperCase())))
             .map(catalogEntry -> new AppstoreHit(RequestContextUtils.getLocale(request), catalogEntry,
                 imageService.getImageForURL(catalogEntry.getIcon(RequestContextUtils.getLocale(request)), ImageFormat.PNG_64BY64, false),
                 getOrganizationName(catalogEntry)))
