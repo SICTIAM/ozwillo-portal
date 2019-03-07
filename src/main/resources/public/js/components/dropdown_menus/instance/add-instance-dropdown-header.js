@@ -35,7 +35,7 @@ class AddInstanceDropdownHeader extends React.Component {
     }
 
     componentDidMount = async () =>  {
-        await this._fetchApplications();
+        await this._handleApplications();
     }
 
     onOptionChange(selectedOption) {
@@ -64,49 +64,38 @@ class AddInstanceDropdownHeader extends React.Component {
             });
     }
 
-    filterApps = (app) => {
-        const org = this.props.organization;
-        // only applications
-        if (AppTypes.application !== app.type) {
-            return false;
-        }
-
-        //Check types
-        return (app.target_publicbodies && org.type === 'PUBLIC_BODY') ||
-            (app.target_companies && org.type === 'COMPANY') ||
-            (app.target_citizens && !org.type);
-    }
-
     _fetchApplications = async () => {
-        const {apps, maybeMoreApps, totalAppsFetched} = this.state
-        const {apps: appsFetched, maybeMoreApps: maybeMoreAppsFetched}  = await customFetch(`/api/store/applications`, {urlParams: {
-                target_citizens: true,
-                target_publicbodies: true,
-                target_companies: true,
+        const {totalAppsFetched} = this.state;
+        const {organization} = this.props;
+
+        return await customFetch(`/api/store/applications`, {urlParams: {
+                target_citizens: !organization.type,
+                target_publicbodies: organization.type === 'PUBLIC_BODY',
+                target_companies: organization.type === 'COMPANY',
                 free: true,
                 paid: true,
+                appType: AppTypes.application,
                 last: totalAppsFetched
             }});
-        let appsRes = appsFetched.filter(app => this.filterApps(app)).concat(apps)
+    };
+
+    _handleApplications = async () => {
+        const {apps, maybeMoreApps, totalAppsFetched} = this.state;
+        const {apps: appsFetched, maybeMoreApps: maybeMoreAppsFetched}  = await this._fetchApplications();
+
+        let appsRes = appsFetched.concat(apps);
         this.setState({apps: appsRes , maybeMoreApps: maybeMoreAppsFetched, totalAppsFetched: totalAppsFetched + appsFetched.length},async ()  => {
             if(appsRes.length < MIN_APPS_NEEDED_TO_SCROLL && maybeMoreAppsFetched){
-                await this._fetchApplications();
+                await this._handleApplications();
             }
         });
 
         return {apps: apps, maybeMoreApps: maybeMoreApps}
-    }
+    };
 
     _handleMoreApplications = async () => {
-        const {totalAppsFetched, apps} =  this.state
-        const {apps: appsFetched, maybeMoreApps} = await customFetch(`/api/store/applications`, {urlParams: {
-                target_citizens: true,
-                target_publicbodies: true,
-                target_companies: true,
-                free: true,
-                paid: true,
-                last: totalAppsFetched
-        }});
+        const {totalAppsFetched, apps} =  this.state;
+        const {apps: appsFetched, maybeMoreApps} = await this._fetchApplications();
         this.setState({apps: appsFetched.concat(apps), totalAppsFetched: totalAppsFetched + appsFetched.length, maybeMoreApps: maybeMoreApps})
     };
 
